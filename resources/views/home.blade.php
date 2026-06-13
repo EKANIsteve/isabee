@@ -6,7 +6,7 @@
 <section class="hero-section">
     <div class="hero-slider">
 
-        @forelse($sliders as $slide)
+        @forelse(($sliders ?? collect()) as $slide)
             <div class="hero-slide @if($loop->first) active @endif">
                 <img src="{{ asset('images/slider/' . $slide->image) }}" alt="{{ $slide->titre }}">
 
@@ -39,21 +39,34 @@
             <div class="hero-slide active">
                 <img src="{{ asset('images/logo.jpg') }}" alt="ISABEE">
                 <div class="hero-overlay"></div>
+
                 <div class="hero-content">
                     <span>Université d’Ebolowa</span>
                     <h2>Bienvenue à l’ISABEE</h2>
                     <p>Institut Supérieur d’Agriculture, du Bois, de l’Eau et de l’Environnement.</p>
+
+                    <div class="hero-actions">
+                        <a href="{{ route('concours.inscription') }}" class="btn btn-red">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            Concours 2026
+                        </a>
+
+                        <a href="{{ route('formation.continue') }}" class="btn btn-green">
+                            <i class="fa-solid fa-book-open"></i>
+                            Formation Continue
+                        </a>
+                    </div>
                 </div>
             </div>
         @endforelse
 
     </div>
 
-    <button class="hero-arrow hero-prev" id="heroPrev">
+    <button class="hero-arrow hero-prev" id="heroPrev" type="button">
         <i class="fa-solid fa-chevron-left"></i>
     </button>
 
-    <button class="hero-arrow hero-next" id="heroNext">
+    <button class="hero-arrow hero-next" id="heroNext" type="button">
         <i class="fa-solid fa-chevron-right"></i>
     </button>
 </section>
@@ -101,7 +114,7 @@
                 </p>
             </div>
 
-            <button class="director-btn" id="directorBtn">
+            <button class="director-btn" id="directorBtn" type="button">
                 Lire le message complet
             </button>
         </div>
@@ -128,12 +141,12 @@
         </div>
 
         <div class="annonces-grid">
-            @forelse($annonces as $annonce)
+            @forelse(($annonces ?? collect()) as $annonce)
                 <div class="annonce-card">
                     <div class="icon">
                         <i class="fa-solid fa-bullhorn"></i>
                     </div>
-                    <a href="{{ $annonce->lien }}">{{ $annonce->titre }}</a>
+                    <a href="{{ $annonce->lien ?? '#' }}">{{ $annonce->titre }}</a>
                 </div>
             @empty
                 <div class="annonce-card">
@@ -217,7 +230,7 @@
         <div class="accordion">
 
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button">
                     Cursus Ingénieur
                     <i class="fa-solid fa-plus"></i>
                 </button>
@@ -227,7 +240,7 @@
             </div>
 
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button">
                     Sciences de l’Ingénieur
                     <i class="fa-solid fa-plus"></i>
                 </button>
@@ -237,7 +250,7 @@
             </div>
 
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button">
                     Masters Professionnels et Recherche
                     <i class="fa-solid fa-plus"></i>
                 </button>
@@ -247,7 +260,7 @@
             </div>
 
             <div class="accordion-item">
-                <button class="accordion-header">
+                <button class="accordion-header" type="button">
                     Localisation
                     <i class="fa-solid fa-plus"></i>
                 </button>
@@ -272,9 +285,9 @@
         </div>
 
         <div class="staff-grid">
-            @forelse($personnels as $personnel)
+            @forelse(($personnels ?? collect()) as $personnel)
                 <div class="staff-card">
-                    <img src="{{ asset('storage/' . $personnel->photo) }}" alt="{{ $personnel->nom }}">
+                    <img src="{{ $personnel->photo ? asset('storage/' . $personnel->photo) : asset('images/logo.jpg') }}" alt="{{ $personnel->nom }}">
                     <div class="staff-content">
                         <h3>{{ $personnel->nom }}</h3>
                         <p>{{ $personnel->poste }}</p>
@@ -299,7 +312,7 @@
         </div>
 
         <div class="news-grid">
-            @forelse($actualites as $actu)
+            @forelse(($actualites ?? collect()) as $actu)
                 <article class="news-card">
                     <h3>{{ $actu->titre }}</h3>
                     <p>{{ $actu->contenu }}</p>
@@ -322,3 +335,86 @@
 </section>
 
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const slides = document.querySelectorAll('.hero-slide');
+        const prev = document.getElementById('heroPrev');
+        const next = document.getElementById('heroNext');
+
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            if (!slides.length) return;
+
+            slides.forEach(slide => slide.classList.remove('active'));
+
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        if (prev) {
+            prev.addEventListener('click', function () {
+                showSlide(currentSlide - 1);
+            });
+        }
+
+        if (next) {
+            next.addEventListener('click', function () {
+                showSlide(currentSlide + 1);
+            });
+        }
+
+        if (slides.length > 1) {
+            setInterval(function () {
+                showSlide(currentSlide + 1);
+            }, 6000);
+        }
+
+        const directorBtn = document.getElementById('directorBtn');
+        const directorFull = document.getElementById('directorFull');
+
+        if (directorBtn && directorFull) {
+            directorBtn.addEventListener('click', function () {
+                directorFull.classList.toggle('hidden-message');
+
+                directorBtn.textContent = directorFull.classList.contains('hidden-message')
+                    ? 'Lire le message complet'
+                    : 'Réduire le message';
+            });
+        }
+
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        accordionHeaders.forEach(function (header) {
+            header.addEventListener('click', function () {
+                const item = header.closest('.accordion-item');
+
+                if (item) {
+                    item.classList.toggle('active');
+                }
+            });
+        });
+
+        const counters = document.querySelectorAll('.counter');
+
+        counters.forEach(function (counter) {
+            const target = parseInt(counter.dataset.target || '0');
+            let value = 0;
+            const step = Math.ceil(target / 80);
+
+            const interval = setInterval(function () {
+                value += step;
+
+                if (value >= target) {
+                    value = target;
+                    clearInterval(interval);
+                }
+
+                counter.textContent = value;
+            }, 25);
+        });
+    });
+</script>
+@endpush

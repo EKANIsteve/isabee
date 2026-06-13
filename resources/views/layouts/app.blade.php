@@ -8,12 +8,18 @@
     {{-- VITE --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    {{-- Font Awesome --}}
+    {{-- CSS PUBLIC --}}
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style1.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/concours.css') }}">
+
+    {{-- FONT AWESOME --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    @stack('styles')
 </head>
 
 <body>
-    
 
 {{-- PRELOADER --}}
 <div id="preloader" class="preloader">
@@ -42,10 +48,12 @@
     <div class="info-news">
         <marquee behavior="scroll" direction="left">
             @isset($annonces)
-                @foreach($annonces as $annonce)
-                    <a href="{{ $annonce->lien }}">{{ $annonce->titre }}</a>
+                @forelse($annonces as $annonce)
+                    <a href="{{ $annonce->lien ?? '#' }}">{{ $annonce->titre }}</a>
                     &nbsp; — &nbsp;
-                @endforeach
+                @empty
+                    Bienvenue sur le site officiel de l’ISABEE Ebolowa —
+                @endforelse
             @else
                 Bienvenue sur le site officiel de l’ISABEE Ebolowa —
             @endisset
@@ -57,7 +65,7 @@
 <header class="main-header">
     <div class="container header-inner">
 
-        <a href="/" class="brand">
+        <a href="{{ url('/') }}" class="brand">
             <img src="{{ asset('images/logo.jpg') }}" alt="Logo ISABEE">
             <div>
                 <h1>ISABEE</h1>
@@ -65,13 +73,13 @@
             </div>
         </a>
 
-        <button class="menu-toggle" id="menuToggle">
+        <button class="menu-toggle" id="menuToggle" type="button">
             <i class="fa-solid fa-bars"></i>
         </button>
 
         <nav class="main-nav" id="mainNav">
             <ul>
-                <li><a href="/">Accueil</a></li>
+                <li><a href="{{ url('/') }}">Accueil</a></li>
 
                 <li class="dropdown">
                     <a href="#">Formations <i class="fa-solid fa-angle-down"></i></a>
@@ -99,11 +107,11 @@
                 <li class="dropdown">
                     <a href="#">Concours <i class="fa-solid fa-angle-down"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/concours/admission">Admission</a></li>
-                        <li><a href="/concours/communique">Communiqué</a></li>
+                        <li><a href="{{ url('/concours/admission') }}">Admission</a></li>
+                        <li><a href="{{ url('/concours/communique') }}">Communiqué</a></li>
                         <li><a href="{{ route('concours.inscription') }}">Inscription</a></li>
-                        <li><a href="/concours/liste-provisoire">Liste provisoire</a></li>
-                        <li><a href="/concours/resultat">Résultat</a></li>
+                        <li><a href="{{ url('/concours/liste-provisoire') }}">Liste provisoire</a></li>
+                        <li><a href="{{ url('/concours/resultat') }}">Résultat</a></li>
                     </ul>
                 </li>
 
@@ -121,10 +129,8 @@
 </main>
 
 {{-- FOOTER --}}
-{{-- FOOTER PROFESSIONNEL --}}
 <footer class="footer-pro">
 
-    {{-- Vague décorative --}}
     <div class="footer-wave">
         <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
             <path d="M0,64 C240,120 480,0 720,48 C960,96 1200,16 1440,72 L1440,120 L0,120 Z"></path>
@@ -133,7 +139,6 @@
 
     <div class="container footer-main">
 
-        {{-- Colonne 1 : Présentation --}}
         <div class="footer-brand footer-animate">
             <div class="footer-logo-box">
                 <img src="{{ asset('images/logo.jpg') }}" alt="Logo ISABEE">
@@ -157,11 +162,10 @@
             </div>
         </div>
 
-        {{-- Colonne 2 : Liens rapides --}}
         <div class="footer-column footer-animate">
             <h4>Liens rapides</h4>
             <ul>
-                <li><a href="/"><i class="fa-solid fa-angle-right"></i> Accueil</a></li>
+                <li><a href="{{ url('/') }}"><i class="fa-solid fa-angle-right"></i> Accueil</a></li>
                 <li><a href="#"><i class="fa-solid fa-angle-right"></i> Formations</a></li>
                 <li><a href="#"><i class="fa-solid fa-angle-right"></i> Départements</a></li>
                 <li><a href="#"><i class="fa-solid fa-angle-right"></i> Actualités</a></li>
@@ -169,7 +173,6 @@
             </ul>
         </div>
 
-        {{-- Colonne 3 : Formations --}}
         <div class="footer-column footer-animate">
             <h4>Formations</h4>
             <ul>
@@ -181,7 +184,6 @@
             </ul>
         </div>
 
-        {{-- Colonne 4 : Contact --}}
         <div class="footer-contact footer-animate">
             <h4>Contact</h4>
 
@@ -212,12 +214,9 @@
 
     </div>
 
-    {{-- Ligne du bas --}}
     <div class="footer-bottom-pro">
         <div class="container footer-bottom-inner">
-            <p>
-                © {{ date('Y') }} ISABEE Ebolowa - Tous droits réservés.
-            </p>
+            <p>© {{ date('Y') }} ISABEE Ebolowa - Tous droits réservés.</p>
 
             <div>
                 <a href="#">Politique de confidentialité</a>
@@ -227,12 +226,16 @@
         </div>
     </div>
 
-    {{-- Bouton retour en haut --}}
-    <button id="backToTop" class="back-to-top">
+    <button id="backToTop" class="back-to-top" type="button">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
 </footer>
+
+{{-- JS PUBLIC --}}
+<script src="{{ asset('js/concours.js') }}" defer></script>
+<script src="{{ asset('js/inscription.js') }}" defer></script>
+
 <script>
     function forceHidePreloader() {
         const preloader = document.getElementById('preloader');
@@ -248,6 +251,34 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         setTimeout(forceHidePreloader, 700);
+
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+
+        if (menuToggle && mainNav) {
+            menuToggle.addEventListener('click', function () {
+                mainNav.classList.toggle('active');
+            });
+        }
+
+        const backToTop = document.getElementById('backToTop');
+
+        if (backToTop) {
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('show');
+                } else {
+                    backToTop.classList.remove('show');
+                }
+            });
+
+            backToTop.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
     });
 
     window.addEventListener('load', function () {
@@ -256,6 +287,8 @@
 
     setTimeout(forceHidePreloader, 2500);
 </script>
+
+@stack('scripts')
 
 </body>
 </html>
