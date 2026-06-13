@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
-use App\Models\Annonce;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,9 +14,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        View::composer('*', function ($view) {
-            $annonces = Annonce::latest()->get();
-            $view->with('annonces', $annonces);
-        });
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
