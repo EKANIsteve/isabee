@@ -16,6 +16,11 @@
 {{-- FONT AWESOME --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     @stack('styles')
+    <style>
+    body {
+        border: 10px solid red !important;
+    }
+</style>
 </head>
 
 <body>
