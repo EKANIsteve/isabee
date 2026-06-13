@@ -11,16 +11,19 @@ return new class extends Migration
     {
         if (!Schema::hasColumn('users', 'role')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->string('role')->default('viewer')->after('email');
+                $table->string('role')->default('viewer');
             });
         } else {
-            DB::statement("ALTER TABLE users MODIFY role VARCHAR(255) NOT NULL DEFAULT 'viewer'");
+            DB::statement("UPDATE users SET role = 'viewer' WHERE role IS NULL");
+            DB::statement("ALTER TABLE users ALTER COLUMN role TYPE VARCHAR(255)");
+            DB::statement("ALTER TABLE users ALTER COLUMN role SET DEFAULT 'viewer'");
+            DB::statement("ALTER TABLE users ALTER COLUMN role SET NOT NULL");
         }
     }
 
     public function down(): void
     {
-        // On ne supprime pas la colonne role parce qu'elle existait déjà dans ta base.
-        // Si tu veux vraiment la supprimer plus tard, fais-le manuellement.
+        // On ne supprime pas la colonne role,
+        // car elle existe déjà dans une ancienne migration.
     }
 };
