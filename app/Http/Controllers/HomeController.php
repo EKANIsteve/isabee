@@ -16,7 +16,7 @@ class HomeController extends Controller
         $actualites = Actualite::latest()->take(3)->get();
         $personnels = Personnel::latest()->get();
 
-        return view('pages.home', compact(
+        return view('home', compact(
             'annonces',
             'sliders',
             'actualites',
