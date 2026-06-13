@@ -9,8 +9,7 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 {{-- CSS PUBLIC AVEC VERSION POUR ÉVITER LE CACHE --}}
-<link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ time() }}">
-<link rel="stylesheet" href="{{ asset('css/style1.css') }}?v={{ time() }}">
+
 <link rel="stylesheet" href="{{ asset('css/concours.css') }}?v={{ time() }}">
 
 {{-- FONT AWESOME --}}
