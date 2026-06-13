@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 {{-- HERO SLIDER --}}
 <section class="hero-section">
     <div class="hero-slider">
