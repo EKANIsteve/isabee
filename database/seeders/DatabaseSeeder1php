@@ -1,0 +1,157 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\Pays;
+use App\Models\Region;
+use App\Models\Departement;
+use App\Models\Arrondissement;
+
+class DatabaseSeeder extends Seeder
+{
+    public function run(): void
+    {
+        // Vider les tables pour éviter doublons
+        
+
+        // Liste complète des pays (juste les noms)
+        $paysList = [
+            'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria',
+            'Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan',
+            'Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia',
+            'Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Congo','Costa Rica',
+            'Croatia','Cuba','Cyprus','Czech Republic','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt',
+            'El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia','Fiji','Finland','France','Gabon',
+            'Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana',
+            'Haiti','Honduras','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel',
+            'Italy','Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos',
+            'Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Madagascar','Malawi',
+            'Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova',
+            'Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar','Namibia','Nauru','Nepal','Netherlands',
+            'New Zealand','Nicaragua','Niger','Nigeria','North Korea','North Macedonia','Norway','Oman','Pakistan','Palau',
+            'Palestine','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Qatar','Romania',
+            'Russia','Rwanda','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal',
+            'Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Korea',
+            'South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Syria','Taiwan','Tajikistan',
+            'Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu',
+            'Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela',
+            'Vietnam','Yemen','Zambia','Zimbabwe'
+        ];
+
+        foreach ($paysList as $nomPays) {
+            $pays = Pays::create([
+                'nom_pays' => $nomPays
+            ]);
+
+            // Si le pays n’est pas le Cameroun, ne pas remplir les régions/départements/arrondissements
+            if ($nomPays !== 'Cameroon') {
+                continue;
+            }
+
+            // --- Données normalisées pour le Cameroun ---
+            $cameroonData = [
+                'Adamaoua' => [
+                    'Djérem' => ['Tibati', 'Ngaoundal'],
+                    'Faro-et-Déo' => ['Tignère', 'Galim-Tignère', 'Kontcha', 'Mayo-Baleo'],
+                    'Mayo-Banyo' => ['Banyo', 'Bankim', 'Mayo-Darle'],
+                    'Mbéré' => ['Meiganga', 'Djohong', 'Dir', 'Ngaoui'],
+                    'Vina' => ['Ngaoundéré 1er', 'Ngaoundéré 2e', 'Ngaoundéré 3e', 'Belel', 'Mbe', 'Nganha', 'Nyambaka', 'Martap']
+                ],
+                'Centre' => [
+                    'Haute-Sanaga' => ['Mbancjock','Nanga-Eboko','Minta','Nkoteng','Bibey','Lembe-Yezoum'],
+                    'Lekié' => ['Evodoula','Monatele','Obala','Okala','Saa','Elig-Mfomo','Ebebda','Batshenga','Lobo'],
+                    'Mbam-et-Inoubou' => ['Bafia','Bokito','Deuk','Makenene','Ndikinimeki','Ombessa','Kiki','Kon-Yambeta','Nitoukou'],
+                    'Mbam-et-Kim' => ['Ntui','Ngambe-Tikar','Ngoro','Yoko','Mbangassina'],
+                    'Méfou-et-Afamba' => ['Mfou','Esse','Soa','Awaé','Afanloum','Assamba','Edzendouan','Nkolafamba'],
+                    'Méfou-et-Akono' => ['Ngoumou','Akono','Mbankomo','Bikok'],
+                    'Mfoundi' => ['Yaoundé I','Yaoundé II','Yaoundé III','Yaoundé IV','Yaoundé V','Yaoundé VI','Yaoundé VII'],
+                    'Nyong-et-Kéllé' => ['Eseka','Bot-Makak','Makak','Messongo','Ngog-Mapubi','Matomb','Dibang','Nguibassal','Bondjock','Biyouha'],
+                    'Nyong-et-Mfoumou' => ['Akonolinga','Ayos','Endom','Mengang','Yakombo'],
+                    'Nyong-et-So\'o' => ['Dzend','Mbalmayo','Ngomedzap','Akoeman','Mengueme','Nkol-Mété']
+                ],
+                'Est' => [
+                    'Boumba-et-Ngoko' => ['Moloundou','Salapoumbe','Gari-Gombo','Yokadouma'],
+                    'Haut-Nyong' => ['Abong-Mbang','Doumé','Lomié','Messamena','Nguelemendouka','Dimako','Ngoyla','Bebend','Mbouanz','Dja','Doumaintang','Messok','Samalomo','Mboma'],
+                    'Kadey' => ['Batouri','Ndelele','Kette','Ndem-Nam','Bombe','Mbotoro'],
+                    'Lom-et-Djerem' => ['Bertoua 1er','Bertoua 2e','Bertoua 3e','Betaré-Oya','Belabo','Garoua-Boulaï','Diang','Mandjou','Ngoura']
+                ],
+                'Extrême-Nord' => [
+                    'Diamaré' => ['Maroua I','Maroua II','Maroua III','Méri','Gazawa','Pette','Dargala','Ndoukoula','Kaélé','Kalfou','Wina','Vélé','Tchati-Bali','Gobo','Kaï-Kaï'],
+                    'Logone-et-Chari' => ['Kousseri','Makary','Logone-Birni','Goulfey','Waza','Fotokol','Blangoua','Darak','Zina'],
+                    'Mayo-Danay' => ['Yagoua','Guéré','Datcheka','Kar-Hay','Veilé'],
+                    'Mayo-Kani' => ['Kaélé','Mindif','Moutourwa','Moulvodaye','Porhi','Taibong'],
+                    'Mayo-Sava' => ['Kolofata','Mora','Tokombéré','Koza','Hina','Mogode','Mayo-Maskota','Souledé-Roua'],
+                    'Mayo-Tsanaga' => ['Maroua','Kaélé','Kousseri','Mokolo','Hina','Koza','Mora']
+                ],
+                'Littoral' => [
+                    'Moungo' => ['Nkongsamba I','Nkongsamba II','Nkongsamba III','Nkongsamba IV','Nkongsamba V'],
+                    'Nkam' => ['Yabassi','Ebone','Nkondjock','Bali','Nkam'],
+                    'Sanaga-Maritime' => ['Édéa','Ndom','Ngambe','Pouma','Dibamba'],
+                    'Wouri' => ['Douala I','Douala II','Douala III','Douala IV','Douala V','Douala VI']
+                ],
+                'Nord' => [
+                    'Bénoué' => ['Garoua','Pitoa','Lagdo','Dembo','Bibemi','Tcholliré','Rey-Bouba','Madingring'],
+                    'Faro' => ['Bogo','Poli','Mayo-Danay','Meri','Gazawa'],
+                    'Mayo-Louti' => ['Kousséri','Makary','Logone-Birni','Goulfey','Waza','Fotokol','Blangoua','Darak','Zina'],
+                    'Mayo-Rey' => ['Tcholliré','Datcheka','Yagoua','Guéré','Maga','Kaï-Kaï','Wina','Vélé','Gobo']
+                ],
+                'Nord-Ouest' => [
+                    'Boyo' => ['Bamenda','Jakiri','Mbven','Oku','Nkumu','Noni'],
+                    'Bui' => ['Njinikom','Fundi','Belo','Mbiame'],
+                    'Donga-Mantung' => ['Nwa','Nkambe','Ako','Misaje','Furu-Awa'],
+                    'Menchum' => ['Wum','Wum Rural','Fungom'],
+                    'Mezam' => ['Bamenda','Bali','Tubah','Bafut','Santa'],
+                    'Momo' => ['Mbengwi','Batibo','Ndu','Njikwa'],
+                    'Ngoketunjia' => ['Ngoketunjia 1','Ngoketunjia 2','Ngoketunjia 3']
+                ],
+                'Ouest' => [
+                    'Bamboutos' => ['Bafang','Bangangté','Bana','Bandja','Bamendjou','Bazou'],
+                    'Haut-Nkam' => ['Bafang','Bana','Bandja','Kekem','Bakou','Banka'],
+                    'Hauts-Plateaux' => ['Dschang','Fokoué','Penka-Michel','Santchou'],
+                    'Koung-Khi' => ['Bayangam','Bamena','Bamougoum','Djebem'],
+                    'Menoua' => ['Dschang','Fokoué','Santchou','Fongo-Tongo'],
+                    'Mifi' => ['Bafoussam I','Bafoussam II','Bafoussam III'],
+                    'Ndé' => ['Bangangté','Bazou','Tonga','Bafou'],
+                    'Noun' => ['Foumban','Foumbot','Malentouen','Massangam','Magba','Koutaba','Bangourain','Kouoptamo','Njimon']
+                ],
+                'Sud' => [
+                    'Dja-et-Lobo' => ['Ebolowa I','Ebolowa II','Biwong-Bane','Mvangan','Mengong','Ngoulemakong','Efoulan','Biwong-Bulu'],
+                    'Mvila' => ['Ebolowa','Mvangan','Biwo','Ntem'],
+                    'Océan' => ['Kribi','Campo','Lokoundje','Bipindi','Mvengue','Bipindi'],
+                    'Vallée-du-Ntem' => ['Ambam','Ma’an','Olamze','Kye-Ossi']
+                ],
+                'Sud-Ouest' => [
+                    'Fako' => ['Limbe I','Limbe II','Limbe III','Buea','West-Coast','Tiko','Muyuka'],
+                    'Koupé-Manengouba' => ['Bangem','Nguti','Tombel'],
+                    'Lebialem' => ['Fontem','Alou','Wabane'],
+                    'Manyu' => ['Mamfe','Eyumodjock','Upper-Bayang','Akwaya'],
+                    'Meme' => ['Kumba I','Kumba II','Kumba III','Konye','Bonge'],
+                    'Ndian' => ['Bamusso','Ekondo-Titi','Isangele','Mundemba','Kombo-Abedimo','Kombo-Idinti','Idabato','Dikome-Balue','Toko']
+                ],
+            ];
+
+            // Parcourir chaque région
+            foreach ($cameroonData as $regionName => $departements) {
+                $region = Region::create([
+                    'pays_id' => $pays->id,
+                    'nom_region' => $regionName
+                ]);
+
+                foreach ($departements as $depName => $arrondissements) {
+                    $dep = Departement::create([
+                        'region_id' => $region->id,
+                        'nom_departement' => $depName
+                    ]);
+
+                    foreach ($arrondissements as $arrName) {
+                        Arrondissement::create([
+                            'departement_id' => $dep->id,
+                            'nom_arrondissement' => $arrName
+                        ]);
+                    }
+                }
+            }
+        }
+    }
+}

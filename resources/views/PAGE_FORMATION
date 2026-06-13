@@ -1,0 +1,836 @@
+@extends('layouts.app')
+
+@section('content')
+
+<style>
+
+.page-container{
+    width:95%;
+    margin:auto;
+    margin-top:60px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.page-title{
+    text-align:center;
+    font-size:32px;
+    font-weight:bold;
+    color:#1b4f72;
+    margin-bottom:10px;
+}
+
+.page-subtitle{
+    text-align:center;
+    font-size:18px;
+    margin-bottom:40px;
+    color:#555;
+}
+
+.section-title{
+    background:#1b4f72;
+    color:white;
+    padding:10px;
+    font-size:20px;
+    margin-top:40px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:30px;
+}
+
+table th{
+    background:#f2f2f2;
+    padding:10px;
+    border:1px solid #ccc;
+    text-align:center;
+}
+
+table td{
+    padding:8px;
+    border:1px solid #ccc;
+}
+
+.total{
+    font-weight:bold;
+    background:#fafafa;
+}
+
+</style>
+
+
+<div class="page-container">
+
+<div class="page-title">
+FORMATION CONTINUE – ISABEE
+</div>
+
+<div class="page-subtitle">
+Institut Supérieur d’Agriculture, de Bâtiment, de l’Eau et de l’Environnement
+</div>
+
+
+
+{{-- AGROPASTORAL --}}
+
+<div class="section-title">
+Domaine : Agropastoral
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Filière</th>
+<th>Spécialité</th>
+<th>Nombre de places</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Agriculture et Elevage</td>
+<td>Production Animale</td>
+<td>20</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Production Végétale</td>
+<td>20</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Aquaculture</td>
+<td>20</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Infrastructures et Equipements Ruraux</td>
+<td>20</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Technique Commerciale Agricole</td>
+<td>20</td>
+</tr>
+
+</tbody>
+</table>
+
+
+
+{{-- EAU ET ENVIRONNEMENT --}}
+
+<div class="section-title">
+Domaine : Eau et Environnement
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Filière</th>
+<th>Spécialité</th>
+<th>Nombre de places</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Ingénierie et Gestion de l’Eau</td>
+<td>Hydrologie et Gestion des Ressources en Eau</td>
+<td>20</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Hydrogéologie et Gestion des Eaux Souterraines</td>
+<td>20</td>
+</tr>
+
+<tr>
+<td>Sciences Environnementales</td>
+<td>Agroforesterie et Gestion Forestière</td>
+<td>20</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+
+{{-- INDUSTRIE ET TECHNOLOGIE --}}
+
+<div class="section-title">
+Domaine : Industrie et Technologie
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Filière</th>
+<th>Spécialité</th>
+<th>Nombre de places</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Génie Thermique</td>
+<td>Génie thermique et Energies (Option : Energies Renouvelables)</td>
+<td>20</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+
+{{-- GENIE CIVIL --}}
+
+<div class="section-title">
+Domaine : Génie Civil
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Filière</th>
+<th>Spécialité</th>
+<th>Nombre de places</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Bâtiment</td>
+<td>Bâtiment</td>
+<td>20</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Travaux publics</td>
+<td>20</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Géotechnique et Géologie appliquée</td>
+<td>20</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Géomètre topographe</td>
+<td>20</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Urbanisme</td>
+<td>20</td>
+</tr>
+
+<tr class="total">
+<td colspan="2">TOTAL</td>
+<td>280</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+
+{{-- MASTER / SPECIALITES --}}
+
+<div class="section-title">
+Formations spécialisées
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Filière</th>
+<th>Spécialité</th>
+<th>Nombre de places</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Agriculture, Elevage</td>
+<td>Sciences Halieutiques et Génie Alimentaire</td>
+<td>15</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Biotechnologie et Production des Semences</td>
+<td>15</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Bio Pesticide</td>
+<td>15</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Sciences Halieutiques</td>
+<td>15</td>
+</tr>
+
+<tr>
+<td>Energies Renouvelables</td>
+<td>Gestion Durable et Valorisation de la Biomasse (GeVa)</td>
+<td>15</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Génie Énergétique et Développement Durable (GEDD)</td>
+<td>15</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Génie Frigorifique, climatisation et Énergies Renouvelables</td>
+<td>15</td>
+</tr>
+
+<tr>
+<td>Génie de l’Habitat</td>
+<td>Performance énergétique et environnementale des bâtiments</td>
+<td>15</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Conduite des chantiers et travaux publics</td>
+<td>15</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Construction écologique</td>
+<td>15</td>
+</tr>
+
+<tr class="total">
+<td colspan="2">TOTAL</td>
+<td>150</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+
+{{-- CERTIFICATIONS --}}
+
+<div class="section-title">
+Certifications professionnelles
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>N°</th>
+<th>Spécialité</th>
+<th>Diplôme d'entrée</th>
+<th>Places</th>
+<th>Durée</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>1</td>
+<td>Assistant Architecte</td>
+<td>BEPC minimum + maîtrise bureautique et internet</td>
+<td>15</td>
+<td>06 mois</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>Conseiller Technique Habitat Ecologique</td>
+<td>Licence technologique + expérience construction</td>
+<td>15</td>
+<td>06 mois</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>Agent Immobilière</td>
+<td>BEPC ou équivalent</td>
+<td>15</td>
+<td>06 mois</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>Agent Technique Voirie et Assainissement</td>
+<td>CAP ou équivalent</td>
+<td>15</td>
+<td>06 mois</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>GIS and Data Analysis</td>
+<td>Probatoire minimum</td>
+<td>15</td>
+<td>06 mois</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>Agent Technique Communal</td>
+<td>Diplôme technique ou supérieur</td>
+<td>15</td>
+<td>06 mois</td>
+</tr>
+
+<tr class="total">
+<td colspan="3">TOTAL</td>
+<td colspan="2">150</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+</div>
+
+@endsection
+
+
+@extends('layouts.app')
+
+@section('content')
+
+<style>
+
+body{
+font-family: 'Segoe UI', sans-serif;
+margin:0;
+background:#f5f7fb;
+}
+
+/* HERO SLIDER */
+
+.hero{
+height:500px;
+background:url('/images/slide1.jpg') center/cover no-repeat;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:white;
+position:relative;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+}
+
+.hero h1{
+font-size:50px;
+margin-bottom:10px;
+}
+
+.hero p{
+font-size:20px;
+}
+
+.hero-btn{
+margin-top:20px;
+background:#1e88e5;
+color:white;
+padding:12px 25px;
+border-radius:5px;
+text-decoration:none;
+font-weight:bold;
+}
+
+/* SECTION */
+
+.section{
+padding:80px 10%;
+}
+
+.section-title{
+text-align:center;
+font-size:34px;
+color:#0d47a1;
+margin-bottom:60px;
+font-weight:bold;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:35px;
+}
+
+/* CARD */
+
+.card{
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+transition:0.4s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
+
+.card-body{
+padding:25px;
+}
+
+.card-body h3{
+color:#0d47a1;
+margin-bottom:10px;
+}
+
+.card-body p{
+font-size:14px;
+color:#555;
+line-height:1.6;
+}
+
+.places{
+margin-top:10px;
+font-weight:bold;
+color:#2e7d32;
+}
+
+.btn{
+display:inline-block;
+margin-top:15px;
+background:#0d47a1;
+color:white;
+padding:10px 20px;
+border-radius:5px;
+text-decoration:none;
+}
+
+/* STATS */
+
+.stats{
+background:#0d47a1;
+color:white;
+padding:60px 10%;
+display:flex;
+justify-content:space-around;
+text-align:center;
+}
+
+.stat h2{
+font-size:40px;
+margin-bottom:10px;
+}
+
+.stat p{
+font-size:16px;
+}
+
+</style>
+
+
+{{-- HERO --}}
+
+<div class="hero">
+
+<div class="hero-content">
+
+<h1>FORMATION CONTINUE ISABEE</h1>
+
+<p>
+Développez vos compétences dans les domaines de
+l'agriculture, de l'environnement et du génie civil.
+</p>
+
+<a href="#formations" class="hero-btn">
+Découvrir les formations
+</a>
+
+</div>
+
+</div>
+
+
+
+{{-- STATISTIQUES --}}
+
+<div class="stats">
+
+<div class="stat">
+<h2>580</h2>
+<p>Places disponibles</p>
+</div>
+
+<div class="stat">
+<h2>25+</h2>
+<p>Formations</p>
+</div>
+
+<div class="stat">
+<h2>4</h2>
+<p>Domaines</p>
+</div>
+
+</div>
+
+
+
+{{-- FORMATIONS --}}
+
+<section class="section" id="formations">
+
+<div class="section-title">
+Domaines de Formation
+</div>
+
+
+<div class="grid">
+
+{{-- AGROPASTORAL --}}
+
+<div class="card">
+
+<img src="/images/agriculture.jpg">
+
+<div class="card-body">
+
+<h3>Agropastoral</h3>
+
+<p>
+Formations spécialisées dans l’agriculture moderne,
+l’élevage, l’aquaculture et la gestion des ressources rurales.
+</p>
+
+<div class="places">
+100 places disponibles
+</div>
+
+<a href="#" class="btn">Voir les spécialités</a>
+
+</div>
+
+</div>
+
+
+
+{{-- EAU ENVIRONNEMENT --}}
+
+<div class="card">
+
+<img src="/images/eau.jpg">
+
+<div class="card-body">
+
+<h3>Eau et Environnement</h3>
+
+<p>
+Formations axées sur la gestion durable de l’eau,
+l’hydrologie et la protection de l’environnement.
+</p>
+
+<div class="places">
+60 places disponibles
+</div>
+
+<a href="#" class="btn">Voir les spécialités</a>
+
+</div>
+
+</div>
+
+
+
+{{-- INDUSTRIE --}}
+
+<div class="card">
+
+<img src="/images/energie.jpg">
+
+<div class="card-body">
+
+<h3>Industrie et Technologie</h3>
+
+<p>
+Formation en génie thermique et en énergies renouvelables
+pour accompagner la transition énergétique.
+</p>
+
+<div class="places">
+20 places disponibles
+</div>
+
+<a href="#" class="btn">Voir les spécialités</a>
+
+</div>
+
+</div>
+
+
+
+{{-- GENIE CIVIL --}}
+
+<div class="card">
+
+<img src="/images/geniecivil.jpg">
+
+<div class="card-body">
+
+<h3>Génie Civil</h3>
+
+<p>
+Formations dans les domaines du bâtiment,
+travaux publics, urbanisme et topographie.
+</p>
+
+<div class="places">
+100 places disponibles
+</div>
+
+<a href="#" class="btn">Voir les spécialités</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+{{-- CERTIFICATIONS --}}
+
+<section class="section" style="background:white">
+
+<div class="section-title">
+Certifications Professionnelles
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<img src="/images/architecture.jpg">
+
+<div class="card-body">
+
+<h3>Assistant Architecte</h3>
+
+<p>
+Formation de 6 mois destinée aux personnes souhaitant
+travailler dans le domaine de l’architecture.
+</p>
+
+<div class="places">15 places</div>
+
+<a href="#" class="btn">Voir détails</a>
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<img src="/images/gis.jpg">
+
+<div class="card-body">
+
+<h3>GIS & Data Analysis</h3>
+
+<p>
+Formation en analyse spatiale, systèmes
+d’information géographique et gestion de données.
+</p>
+
+<div class="places">15 places</div>
+
+<a href="#" class="btn">Voir détails</a>
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<img src="/images/immobilier.jpg">
+
+<div class="card-body">
+
+<h3>Agent Immobilier</h3>
+
+<p>
+Formation sur les techniques de gestion,
+de vente et d'administration des biens immobiliers.
+</p>
+
+<div class="places">15 places</div>
+
+<a href="#" class="btn">Voir détails</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+@endsection
