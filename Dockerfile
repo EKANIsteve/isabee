@@ -18,9 +18,11 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --prefer-dist --no-scripts
 
 COPY package*.json ./
-RUN npm install && npm run build
+RUN npm install
 
 COPY . .
+
+RUN npm run build
 
 RUN composer dump-autoload --optimize \
     && php artisan package:discover --ansi || true
