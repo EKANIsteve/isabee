@@ -1,7 +1,7 @@
 import './bootstrap';
 
 /* =====================================================
-   PRELOADER SAFE
+   PRELOADER
 ===================================================== */
 
 function hidePreloader() {
@@ -10,7 +10,7 @@ function hidePreloader() {
     if (preloader) {
         preloader.classList.add('hide');
 
-        setTimeout(() => {
+        setTimeout(function () {
             preloader.style.display = 'none';
         }, 500);
     }
@@ -19,13 +19,7 @@ function hidePreloader() {
 }
 
 window.addEventListener('load', hidePreloader);
-
-document.addEventListener('DOMContentLoaded', function () {
-    setTimeout(hidePreloader, 500);
-});
-
 setTimeout(hidePreloader, 2500);
-
 
 /* =====================================================
    MAIN SCRIPT
@@ -33,10 +27,9 @@ setTimeout(hidePreloader, 2500);
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    /* =====================================================
-       MENU MOBILE
-    ===================================================== */
+    setTimeout(hidePreloader, 700);
 
+    /* MENU MOBILE */
     const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.getElementById('mainNav');
 
@@ -46,66 +39,130 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    /* DROPDOWN MOBILE */
+    const dropdownLinks = document.querySelectorAll('.main-nav .dropdown > a');
 
-    /* =====================================================
-       HERO SLIDER
-    ===================================================== */
+    dropdownLinks.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            if (window.innerWidth <= 992) {
+                event.preventDefault();
 
+                const parent = link.closest('.dropdown');
+
+                if (parent) {
+                    parent.classList.toggle('open');
+                }
+            }
+        });
+    });
+
+    /* HERO SLIDER AUTO */
+    const heroSection = document.querySelector('.hero-section');
     const slides = document.querySelectorAll('.hero-slide');
     const prevBtn = document.getElementById('heroPrev');
     const nextBtn = document.getElementById('heroNext');
+    const dots = document.querySelectorAll('.hero-dot');
 
     let currentSlide = 0;
+    let sliderInterval = null;
 
     function showSlide(index) {
         if (!slides.length) return;
 
-        slides.forEach(slide => {
+        slides.forEach(function (slide) {
             slide.classList.remove('active');
         });
 
+        dots.forEach(function (dot) {
+            dot.classList.remove('active');
+        });
+
         slides[index].classList.add('active');
+
+        if (dots[index]) {
+            dots[index].classList.add('active');
+        }
+
+        currentSlide = index;
     }
 
     function nextSlide() {
         if (!slides.length) return;
 
-        currentSlide = (currentSlide + 1) % slides.length;
-        showSlide(currentSlide);
+        let next = currentSlide + 1;
+
+        if (next >= slides.length) {
+            next = 0;
+        }
+
+        showSlide(next);
     }
 
     function prevSlide() {
         if (!slides.length) return;
 
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        showSlide(currentSlide);
+        let previous = currentSlide - 1;
+
+        if (previous < 0) {
+            previous = slides.length - 1;
+        }
+
+        showSlide(previous);
+    }
+
+    function startSlider() {
+        if (!slides.length) return;
+
+        stopSlider();
+
+        sliderInterval = setInterval(nextSlide, 5000);
+    }
+
+    function stopSlider() {
+        if (sliderInterval) {
+            clearInterval(sliderInterval);
+        }
     }
 
     if (slides.length) {
-        showSlide(currentSlide);
-        setInterval(nextSlide, 5000);
+        showSlide(0);
+        startSlider();
+
+        if (heroSection) {
+            heroSection.addEventListener('mouseenter', stopSlider);
+            heroSection.addEventListener('mouseleave', startSlider);
+        }
     }
 
     if (nextBtn) {
-        nextBtn.addEventListener('click', nextSlide);
+        nextBtn.addEventListener('click', function () {
+            nextSlide();
+            startSlider();
+        });
     }
 
     if (prevBtn) {
-        prevBtn.addEventListener('click', prevSlide);
+        prevBtn.addEventListener('click', function () {
+            prevSlide();
+            startSlider();
+        });
     }
 
+    dots.forEach(function (dot, index) {
+        dot.addEventListener('click', function () {
+            showSlide(index);
+            startSlider();
+        });
+    });
 
-    /* =====================================================
-       ANIMATIONS AU SCROLL
-    ===================================================== */
-
+    /* REVEAL ANIMATION */
     const animatedElements = document.querySelectorAll(
         '.reveal, .reveal-left, .reveal-right, .reveal-zoom'
     );
 
     if (animatedElements.length) {
-        const animationObserver = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                 }
@@ -114,16 +171,12 @@ document.addEventListener('DOMContentLoaded', function () {
             threshold: 0.15
         });
 
-        animatedElements.forEach(element => {
-            animationObserver.observe(element);
+        animatedElements.forEach(function (element) {
+            observer.observe(element);
         });
     }
 
-
-    /* =====================================================
-       MOT DU DIRECTEUR
-    ===================================================== */
-
+    /* MOT DU DIRECTEUR */
     const directorBtn = document.getElementById('directorBtn');
     const directorShort = document.getElementById('directorShort');
     const directorFull = document.getElementById('directorFull');
@@ -144,20 +197,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
-    /* =====================================================
-       ACCORDÉON
-    ===================================================== */
-
+    /* ACCORDÉON */
     const accordionHeaders = document.querySelectorAll('.accordion-header');
 
-    accordionHeaders.forEach(header => {
+    accordionHeaders.forEach(function (header) {
         header.addEventListener('click', function () {
-            const body = this.nextElementSibling;
-            const icon = this.querySelector('i');
+            const body = header.nextElementSibling;
+            const icon = header.querySelector('i');
 
-            accordionHeaders.forEach(otherHeader => {
-                if (otherHeader !== this) {
+            accordionHeaders.forEach(function (otherHeader) {
+                if (otherHeader !== header) {
                     otherHeader.classList.remove('active');
 
                     const otherBody = otherHeader.nextElementSibling;
@@ -174,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            this.classList.toggle('active');
+            header.classList.toggle('active');
 
             if (body) {
                 body.classList.toggle('active');
@@ -187,17 +236,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-
-    /* =====================================================
-       COUNTERS
-    ===================================================== */
-
+    /* COUNTERS */
     const counters = document.querySelectorAll('.counter');
     const statsSection = document.querySelector('.stats-section');
     let counterStarted = false;
 
     function startCounters() {
-        counters.forEach(counter => {
+        counters.forEach(function (counter) {
             const target = Number(counter.dataset.target);
             let count = 0;
             const increment = target / 120;
@@ -217,8 +262,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (statsSection && counters.length) {
-        const statsObserver = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
+        const statsObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
                 if (entry.isIntersecting && !counterStarted) {
                     startCounters();
                     counterStarted = true;
@@ -231,31 +276,12 @@ document.addEventListener('DOMContentLoaded', function () {
         statsObserver.observe(statsSection);
     }
 
-
-    /* =====================================================
-       FOOTER ANIMÉ + BACK TO TOP
-    ===================================================== */
-
-    const footerPro = document.querySelector('.footer-pro');
+    /* BACK TO TOP */
     const backToTop = document.getElementById('backToTop');
-
-    if (footerPro) {
-        const footerObserver = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    footerPro.classList.add('active');
-                }
-            });
-        }, {
-            threshold: 0.15
-        });
-
-        footerObserver.observe(footerPro);
-    }
 
     if (backToTop) {
         window.addEventListener('scroll', function () {
-            if (window.scrollY > 500) {
+            if (window.scrollY > 400) {
                 backToTop.classList.add('show');
             } else {
                 backToTop.classList.remove('show');
@@ -270,11 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
-    /* =====================================================
-       FORMULAIRE MINI : COMMENCER / MODIFIER / VÉRIFIER
-    ===================================================== */
-
+    /* MINI FORMULAIRES CONCOURS */
     const openStartInscription = document.getElementById('openStartInscription');
     const openEditInscription = document.getElementById('openEditInscription');
     const openCheckInscription = document.getElementById('openCheckInscription');
@@ -284,17 +306,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkInscriptionBox = document.getElementById('checkInscriptionBox');
 
     function closeConcoursMiniForms() {
-        if (startInscriptionBox) {
-            startInscriptionBox.classList.remove('show');
-        }
-
-        if (editInscriptionBox) {
-            editInscriptionBox.classList.remove('show');
-        }
-
-        if (checkInscriptionBox) {
-            checkInscriptionBox.classList.remove('show');
-        }
+        if (startInscriptionBox) startInscriptionBox.classList.remove('show');
+        if (editInscriptionBox) editInscriptionBox.classList.remove('show');
+        if (checkInscriptionBox) checkInscriptionBox.classList.remove('show');
     }
 
     if (openStartInscription && startInscriptionBox) {
@@ -305,7 +319,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!isOpen) {
                 startInscriptionBox.classList.add('show');
-
                 startInscriptionBox.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
@@ -322,7 +335,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!isOpen) {
                 editInscriptionBox.classList.add('show');
-
                 editInscriptionBox.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
@@ -339,7 +351,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!isOpen) {
                 checkInscriptionBox.classList.add('show');
-
                 checkInscriptionBox.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
@@ -347,340 +358,4 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
-
-    /* =====================================================
-       FORMULAIRE MULTI-ÉTAPES CONCOURS
-    ===================================================== */
-
-    const concoursForm = document.getElementById('concoursForm');
-    const formSteps = document.querySelectorAll('.form-step');
-    const progressSteps = document.querySelectorAll('.progress-step');
-    const nextButtons = document.querySelectorAll('.btn.next');
-    const prevButtons = document.querySelectorAll('.btn.prev');
-
-    let currentFormStep = 0;
-
-    function showFormStep(index) {
-        if (!concoursForm || !formSteps.length) return;
-
-        formSteps.forEach((step, stepIndex) => {
-            step.classList.toggle('active', stepIndex === index);
-        });
-
-        progressSteps.forEach((progress, progressIndex) => {
-            progress.classList.remove('active', 'completed');
-
-            if (progressIndex < index) {
-                progress.classList.add('completed');
-            }
-
-            if (progressIndex === index) {
-                progress.classList.add('active');
-            }
-        });
-
-        window.scrollTo({
-            top: concoursForm.offsetTop - 120,
-            behavior: 'smooth'
-        });
-    }
-
-    function validateCurrentStep() {
-        if (!formSteps.length) return true;
-
-        const currentStep = formSteps[currentFormStep];
-
-        if (!currentStep) return true;
-
-        const requiredFields = currentStep.querySelectorAll('[required]');
-        let isValid = true;
-
-        requiredFields.forEach(field => {
-            if (!field.value || !field.value.trim()) {
-                field.classList.add('invalid');
-                field.classList.remove('valid');
-                isValid = false;
-            } else {
-                field.classList.remove('invalid');
-                field.classList.add('valid');
-            }
-        });
-
-        return isValid;
-    }
-
-    nextButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            if (!validateCurrentStep()) {
-                alert('Veuillez remplir tous les champs obligatoires avant de continuer.');
-                return;
-            }
-
-            if (currentFormStep < formSteps.length - 1) {
-                currentFormStep++;
-                showFormStep(currentFormStep);
-            }
-        });
-    });
-
-    prevButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            if (currentFormStep > 0) {
-                currentFormStep--;
-                showFormStep(currentFormStep);
-            }
-        });
-    });
-
-    document.querySelectorAll('.field input, .field select').forEach(field => {
-        field.addEventListener('input', function () {
-            if (field.hasAttribute('required')) {
-                if (field.value && field.value.trim()) {
-                    field.classList.add('valid');
-                    field.classList.remove('invalid');
-                } else {
-                    field.classList.add('invalid');
-                    field.classList.remove('valid');
-                }
-            }
-        });
-
-        field.addEventListener('change', function () {
-            if (field.hasAttribute('required')) {
-                if (field.value && field.value.trim()) {
-                    field.classList.add('valid');
-                    field.classList.remove('invalid');
-                } else {
-                    field.classList.add('invalid');
-                    field.classList.remove('valid');
-                }
-            }
-        });
-    });
-
-    if (concoursForm && formSteps.length) {
-        showFormStep(currentFormStep);
-    }
-
-
-    /* =====================================================
-       VALIDATION ÉTAPE FORMATION
-    ===================================================== */
-
-    const cycleSelect = document.getElementById('cycle_select');
-    const filiereSelect = document.getElementById('filiere_select');
-    const specialiteSelect = document.getElementById('specialite_select');
-    const centreExamen = document.getElementById('centre_examen');
-    const btnFormation = document.getElementById('btnFormation');
-
-    function checkFormationStep() {
-        if (!btnFormation) return;
-
-        const isReady =
-            cycleSelect?.value &&
-            filiereSelect?.value &&
-            specialiteSelect?.value &&
-            centreExamen?.value;
-
-        btnFormation.disabled = !isReady;
-    }
-
-    [cycleSelect, filiereSelect, specialiteSelect, centreExamen].forEach(select => {
-        if (select) {
-            select.addEventListener('change', checkFormationStep);
-        }
-    });
-
-    checkFormationStep();
-
-
-    /* =====================================================
-       AJAX FORMATION
-    ===================================================== */
-
-    if (cycleSelect && filiereSelect) {
-        cycleSelect.addEventListener('change', function () {
-            const cycleId = this.value;
-
-            filiereSelect.innerHTML = '<option value="">Chargement...</option>';
-
-            if (specialiteSelect) {
-                specialiteSelect.innerHTML = '<option value="">Sélectionner une spécialité</option>';
-            }
-
-            checkFormationStep();
-
-            if (!cycleId) {
-                filiereSelect.innerHTML = '<option value="">Sélectionner une filière</option>';
-                return;
-            }
-
-            fetch(`/ajax/filieres/${cycleId}`)
-                .then(response => response.json())
-                .then(data => {
-                    filiereSelect.innerHTML = '<option value="">Sélectionner une filière</option>';
-
-                    data.forEach(item => {
-                        filiereSelect.innerHTML += `
-                            <option value="${item.id}">
-                                ${item.nom_filiere}
-                            </option>
-                        `;
-                    });
-
-                    checkFormationStep();
-                })
-                .catch(() => {
-                    filiereSelect.innerHTML = '<option value="">Erreur de chargement</option>';
-                });
-        });
-    }
-
-    if (filiereSelect && specialiteSelect) {
-        filiereSelect.addEventListener('change', function () {
-            const filiereId = this.value;
-
-            specialiteSelect.innerHTML = '<option value="">Chargement...</option>';
-
-            checkFormationStep();
-
-            if (!filiereId) {
-                specialiteSelect.innerHTML = '<option value="">Sélectionner une spécialité</option>';
-                return;
-            }
-
-            fetch(`/ajax/specialites/${filiereId}`)
-                .then(response => response.json())
-                .then(data => {
-                    specialiteSelect.innerHTML = '<option value="">Sélectionner une spécialité</option>';
-
-                    data.forEach(item => {
-                        specialiteSelect.innerHTML += `
-                            <option value="${item.id}">
-                                ${item.nom_specialite}
-                            </option>
-                        `;
-                    });
-
-                    checkFormationStep();
-                })
-                .catch(() => {
-                    specialiteSelect.innerHTML = '<option value="">Erreur de chargement</option>';
-                });
-        });
-    }
-
-
-    /* =====================================================
-       AJAX LOCALISATION
-    ===================================================== */
-
-    const paysSelect = document.getElementById('pays_select');
-    const regionSelect = document.getElementById('region_select');
-    const departementSelect = document.getElementById('departement_select');
-    const arrondissementSelect = document.getElementById('arrondissement_select');
-
-    if (paysSelect && regionSelect) {
-        paysSelect.addEventListener('change', function () {
-            const paysId = this.value;
-
-            regionSelect.innerHTML = '<option value="">Chargement...</option>';
-
-            if (departementSelect) {
-                departementSelect.innerHTML = '<option value="">Sélectionner un département</option>';
-            }
-
-            if (arrondissementSelect) {
-                arrondissementSelect.innerHTML = '<option value="">Sélectionner un arrondissement</option>';
-            }
-
-            if (!paysId) {
-                regionSelect.innerHTML = '<option value="">Sélectionner une région</option>';
-                return;
-            }
-
-            fetch(`/ajax/regions/${paysId}`)
-                .then(response => response.json())
-                .then(data => {
-                    regionSelect.innerHTML = '<option value="">Sélectionner une région</option>';
-
-                    data.forEach(item => {
-                        regionSelect.innerHTML += `
-                            <option value="${item.id}">
-                                ${item.nom_region}
-                            </option>
-                        `;
-                    });
-                })
-                .catch(() => {
-                    regionSelect.innerHTML = '<option value="">Erreur de chargement</option>';
-                });
-        });
-    }
-
-    if (regionSelect && departementSelect) {
-        regionSelect.addEventListener('change', function () {
-            const regionId = this.value;
-
-            departementSelect.innerHTML = '<option value="">Chargement...</option>';
-
-            if (arrondissementSelect) {
-                arrondissementSelect.innerHTML = '<option value="">Sélectionner un arrondissement</option>';
-            }
-
-            if (!regionId) {
-                departementSelect.innerHTML = '<option value="">Sélectionner un département</option>';
-                return;
-            }
-
-            fetch(`/ajax/departements/${regionId}`)
-                .then(response => response.json())
-                .then(data => {
-                    departementSelect.innerHTML = '<option value="">Sélectionner un département</option>';
-
-                    data.forEach(item => {
-                        departementSelect.innerHTML += `
-                            <option value="${item.id}">
-                                ${item.nom_departement}
-                            </option>
-                        `;
-                    });
-                })
-                .catch(() => {
-                    departementSelect.innerHTML = '<option value="">Erreur de chargement</option>';
-                });
-        });
-    }
-
-    if (departementSelect && arrondissementSelect) {
-        departementSelect.addEventListener('change', function () {
-            const departementId = this.value;
-
-            arrondissementSelect.innerHTML = '<option value="">Chargement...</option>';
-
-            if (!departementId) {
-                arrondissementSelect.innerHTML = '<option value="">Sélectionner un arrondissement</option>';
-                return;
-            }
-
-            fetch(`/ajax/arrondissements/${departementId}`)
-                .then(response => response.json())
-                .then(data => {
-                    arrondissementSelect.innerHTML = '<option value="">Sélectionner un arrondissement</option>';
-
-                    data.forEach(item => {
-                        arrondissementSelect.innerHTML += `
-                            <option value="${item.id}">
-                                ${item.nom_arrondissement}
-                            </option>
-                        `;
-                    });
-                })
-                .catch(() => {
-                    arrondissementSelect.innerHTML = '<option value="">Erreur de chargement</option>';
-                });
-        });
-    }
-
 });
