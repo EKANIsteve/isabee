@@ -35,10 +35,11 @@
                     <option value="">Sélectionner un cycle</option>
 
                     @foreach($cycles as $cycle)
-                        <option value="{{ $cycle->id }}"
-                            {{ old('cycle_id', $candidat->cycle_id ?? '') == $cycle->id ? 'selected' : '' }}>
-                            {{ $cycle->nom_cycle }}
-                        </option>
+                       <option value="{{ $cycle->id }}"
+    data-cycle-name="{{ $cycle->nom_cycle }}"
+    {{ old('cycle_id', $candidat->cycle_id ?? '') == $cycle->id ? 'selected' : '' }}>
+    {{ $cycle->nom_cycle }}
+</option>
                     @endforeach
                 </select>
             </div>

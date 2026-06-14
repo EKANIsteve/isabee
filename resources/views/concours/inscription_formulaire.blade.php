@@ -158,6 +158,217 @@
 </section>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Diplômes selon le cycle choisi
+    |--------------------------------------------------------------------------
+    */
+
+    const cycleSelect = document.getElementById('cycle_select');
+    const diplomeSelect = document.getElementById('diplome_entre_select');
+
+    const diplomesPremiereAnnee = [
+        'Baccalauréat C',
+        'Baccalauréat D',
+        'Baccalauréat E',
+        'Baccalauréat F',
+        'Baccalauréat BT',
+        'Baccalauréat TI',
+        'Baccalauréat Agricole',
+        'Baccalauréat SES',
+        'GCE/AL Sciences',
+        'GCE/AL Technique',
+        'Diplôme équivalent'
+    ];
+
+    const diplomesTroisiemeAnnee = [
+        'Diplôme d’Ingénieur des Travaux',
+        'Licence en Biologie végétale',
+        'Licence en Biologie animale',
+        'Licence scientifique',
+        'Licence en Physique',
+        'Licence en Mathématiques',
+        'Licence en Informatique',
+        'Licence en Chimie',
+        'Licence en Economie',
+        'Licence en Sociologie',
+        'BTS Agriculture et Elevage',
+        'BTS Foresterie',
+        'BTS Hydraulique',
+        'BTS Installation Sanitaire',
+        'BTS Génie Rural',
+        'BTS Construction Rurale',
+        'BTS Génie de l’Environnement',
+        'BTS Génie Electrique',
+        'BTS Electrotechnique',
+        'BTS Energie Renouvelable',
+        'DUT scientifique',
+        'HND Agriculture and Livestock',
+        'HND Electrical Engineering',
+        'HND Environmental Engineering',
+        'Technicien Supérieur en Météorologie',
+        'Diplôme équivalent'
+    ];
+
+    function normalizeText(text) {
+        return (text || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function getSelectedCycleName() {
+        if (!cycleSelect || !cycleSelect.value) {
+            return '';
+        }
+
+        const option = cycleSelect.options[cycleSelect.selectedIndex];
+        return option ? option.dataset.cycleName || option.textContent : '';
+    }
+
+    function fillDiplomes() {
+        if (!cycleSelect || !diplomeSelect) {
+            return;
+        }
+
+        const cycleName = normalizeText(getSelectedCycleName());
+        const selectedDiplome = diplomeSelect.dataset.selected || diplomeSelect.value;
+
+        let list = [];
+
+        if (cycleName.includes('premiere') || cycleName.includes('première')) {
+            list = diplomesPremiereAnnee;
+        }
+
+        if (cycleName.includes('troisieme') || cycleName.includes('troisième')) {
+            list = diplomesTroisiemeAnnee;
+        }
+
+        diplomeSelect.innerHTML = '<option value="">Sélectionner un diplôme d’entrée</option>';
+
+        list.forEach(function (diplome) {
+            const selected = selectedDiplome === diplome ? 'selected' : '';
+
+            diplomeSelect.innerHTML += `
+                <option value="${diplome}" ${selected}>
+                    ${diplome}
+                </option>
+            `;
+        });
+    }
+
+    if (cycleSelect && diplomeSelect) {
+        cycleSelect.addEventListener('change', function () {
+            diplomeSelect.dataset.selected = '';
+            fillDiplomes();
+        });
+
+        fillDiplomes();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Taille fichiers : maximum 1 Mo
+    |--------------------------------------------------------------------------
+    */
+
+    function checkFileSize(input, message) {
+        if (!input) return;
+
+        input.addEventListener('change', function () {
+            const file = this.files[0];
+
+            if (file && file.size > 1024 * 1024) {
+                alert(message);
+                this.value = '';
+            }
+        });
+    }
+
+    checkFileSize(
+        document.getElementById('photo_etudiant'),
+        'La photo du candidat ne doit pas dépasser 1 Mo.'
+    );
+
+    checkFileSize(
+        document.getElementById('document_scanner'),
+        'Le reçu scanné ne doit pas dépasser 1 Mo.'
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | Empêcher Suivant si les champs obligatoires de l’étape ne sont pas remplis
+    |--------------------------------------------------------------------------
+    */
+
+    function getStepFields(step) {
+        return step.querySelectorAll('input, select, textarea');
+    }
+
+    function isFieldUsable(field) {
+        return !field.disabled && field.type !== 'hidden';
+    }
+
+    function validateStep(step) {
+        const fields = getStepFields(step);
+
+        for (const field of fields) {
+            if (!isFieldUsable(field)) continue;
+
+            if (field.hasAttribute('required') && !field.checkValidity()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function updateNextButton(step) {
+        const nextButton = step.querySelector('.btn.next');
+
+        if (!nextButton) return;
+
+        nextButton.disabled = !validateStep(step);
+    }
+
+    document.querySelectorAll('.form-step').forEach(function (step) {
+        getStepFields(step).forEach(function (field) {
+            field.addEventListener('input', function () {
+                updateNextButton(step);
+            });
+
+            field.addEventListener('change', function () {
+                updateNextButton(step);
+            });
+        });
+
+        updateNextButton(step);
+    });
+
+    document.querySelectorAll('.btn.next').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            const step = button.closest('.form-step');
+
+            if (!validateStep(step)) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+
+                const invalidField = step.querySelector('input:invalid, select:invalid, textarea:invalid');
+
+                if (invalidField) {
+                    invalidField.reportValidity();
+                }
+
+                return false;
+            }
+        }, true);
+    });
+
+});
+
+    
+document.addEventListener('DOMContentLoaded', function () {
     const paysSelect = document.getElementById('pays_select');
     const regionSelect = document.getElementById('region_select');
     const departementSelect = document.getElementById('departement_select');

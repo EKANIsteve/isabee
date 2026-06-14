@@ -7,7 +7,7 @@
 
         <div>
             <h3>Diplôme et pièces jointes</h3>
-            <p>Renseignez les informations relatives au diplôme et aux fichiers.</p>
+            <p>Renseignez les informations relatives au diplôme, au sport et aux fichiers.</p>
         </div>
     </div>
 
@@ -19,35 +19,42 @@
     <div class="grid grid-3">
 
         <div class="field">
-            <label>Diplôme d’entrée</label>
+            <label for="diplome_entre_select">Diplôme d’entrée <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-graduation-cap"></i>
-                <input type="text"
-                       name="diplome_entre"
-                       value="{{ old('diplome_entre', $candidat->diplome_entre ?? '') }}"
-                       placeholder="Ex : Baccalauréat, BTS, Licence">
+
+                <select name="diplome_entre"
+                        id="diplome_entre_select"
+                        data-selected="{{ old('diplome_entre', $candidat->diplome_entre ?? '') }}"
+                        required>
+                    <option value="">Choisir d’abord le cycle</option>
+                </select>
             </div>
         </div>
 
         <div class="field">
-            <label>Série du diplôme</label>
+            <label>Série du diplôme <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-list"></i>
                 <input type="text"
                        name="serie_diplome"
                        value="{{ old('serie_diplome', $candidat->serie_diplome ?? '') }}"
-                       placeholder="Ex : C, D, F, A4">
+                       placeholder="Ex : C, D, TI, F4, Agricole..."
+                       required>
             </div>
         </div>
 
         <div class="field">
-            <label>Année d’obtention</label>
+            <label>Année d’obtention <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-calendar"></i>
-                <input type="text"
+                <input type="number"
                        name="annee_obtention_diplome"
                        value="{{ old('annee_obtention_diplome', $candidat->annee_obtention_diplome ?? '') }}"
-                       placeholder="Ex : 2024">
+                       placeholder="Ex : 2024"
+                       min="1990"
+                       max="2100"
+                       required>
             </div>
         </div>
 
@@ -56,13 +63,14 @@
     <div class="grid grid-3">
 
         <div class="field">
-            <label>Établissement / Émetteur</label>
+            <label>Établissement / Émetteur <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-school"></i>
                 <input type="text"
                        name="emetteur_entre_diplome"
                        value="{{ old('emetteur_entre_diplome', $candidat->emetteur_entre_diplome ?? '') }}"
-                       placeholder="Nom de l’établissement">
+                       placeholder="Nom de l’établissement"
+                       required>
             </div>
         </div>
 
@@ -98,21 +106,33 @@
     <div class="grid grid-2">
 
         <div class="field">
-            <label>Sport pratiqué</label>
+            <label>Sport pratiqué <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-person-running"></i>
-                <input type="text"
-                       name="sport_pratique"
-                       value="{{ old('sport_pratique', $candidat->sport_pratique ?? '') }}"
-                       placeholder="Ex : Football">
+
+                <select name="sport_pratique" required>
+                    <option value="">Choisir un sport</option>
+
+                    @php
+                        $sportValue = old('sport_pratique', $candidat->sport_pratique ?? '');
+                    @endphp
+
+                    <option value="Football" {{ $sportValue == 'Football' ? 'selected' : '' }}>Football</option>
+                    <option value="Basketball" {{ $sportValue == 'Basketball' ? 'selected' : '' }}>Basketball</option>
+                    <option value="Handball" {{ $sportValue == 'Handball' ? 'selected' : '' }}>Handball</option>
+                    <option value="Athlétisme" {{ $sportValue == 'Athlétisme' ? 'selected' : '' }}>Athlétisme</option>
+                    <option value="Volleyball" {{ $sportValue == 'Volleyball' ? 'selected' : '' }}>Volleyball</option>
+                    <option value="Autre" {{ $sportValue == 'Autre' ? 'selected' : '' }}>Autre</option>
+                </select>
             </div>
         </div>
 
         <div class="field">
-            <label>Handicap</label>
+            <label>Handicap <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-wheelchair"></i>
-                <select name="handicape">
+
+                <select name="handicape" required>
                     <option value="">Choisir</option>
 
                     <option value="Non"
@@ -142,40 +162,40 @@
 
             <div class="input-icon file-input-icon">
                 <i class="fa-solid fa-image"></i>
+
                 <input type="file"
                        name="photo_etudiant"
+                       id="photo_etudiant"
                        accept="image/png,image/jpeg,image/jpg">
             </div>
 
             @if(isset($candidat) && $candidat->photo_etudiant)
                 <small>Photo actuelle : <strong>{{ $candidat->photo_etudiant }}</strong></small>
             @else
-                <small>Formats acceptés : JPG, JPEG, PNG. Taille maximale : 2 Mo.</small>
+                <small>Formats acceptés : JPG, JPEG, PNG. Taille maximale : 1 Mo.</small>
             @endif
         </div>
 
-       <div class="field file-field">
-    <label>Document scanné</label>
+        <div class="field file-field">
+            <label>Reçu scanné</label>
 
-    <div class="input-icon file-input-icon">
-        <i class="fa-solid fa-image"></i>
+            <div class="input-icon file-input-icon">
+                <i class="fa-solid fa-receipt"></i>
 
-        <input type="file"
-               name="document_scanner"
-               accept="image/png,image/jpeg,image/jpg">
+                <input type="file"
+                       name="document_scanner"
+                       id="document_scanner"
+                       accept="image/png,image/jpeg,image/jpg">
+            </div>
+
+            @if(isset($candidat) && $candidat->document_scanner)
+                <small>Reçu actuel : <strong>{{ $candidat->document_scanner }}</strong></small>
+            @else
+                <small>Le reçu doit être clair et lisible. Formats acceptés : JPG, JPEG, PNG. Taille maximale : 1 Mo.</small>
+            @endif
+        </div>
+
     </div>
-
-    @if(isset($candidat) && $candidat->document_scanner)
-        <small>
-            Document actuel :
-            <strong>{{ $candidat->document_scanner }}</strong>
-        </small>
-    @else
-        <small>
-            Formats acceptés : JPG, JPEG, PNG. Taille maximale : 2 Mo.
-        </small>
-    @endif
-</div>
 
     <div class="submit-warning">
         <i class="fa-solid fa-triangle-exclamation"></i>
