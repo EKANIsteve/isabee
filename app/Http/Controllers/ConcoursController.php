@@ -19,13 +19,15 @@ use App\Models\Actualite;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Milon\Barcode\DNS1D;
 use Milon\Barcode\DNS2D;
+use Illuminate\Support\Facades\File;
+
 
 
 //use PDF; // DomPDF
 
 class ConcoursController extends Controller
 {
-  public function fichePDF($id)
+ public function fichePDF($id)
 {
     $candidat = Concours::with([
         'cycle',
@@ -37,55 +39,41 @@ class ConcoursController extends Controller
         'arrondissement'
     ])->findOrFail($id);
 
-    /*
-    |--------------------------------------------------------------------------
-    | QR CODE
-    |--------------------------------------------------------------------------
-    */
+    $barcodePath = storage_path('framework/barcodes');
+
+    if (!File::exists($barcodePath)) {
+        File::makeDirectory($barcodePath, 0755, true);
+    }
+
     $dns2d = new DNS2D();
-    $dns2d->setStorPath(storage_path('framework/barcodes'));
+    $dns2d->setStorPath($barcodePath);
 
     $qrCode = $dns2d->getBarcodePNG(
-        "ISABEE|{$candidat->numero_candidat}|{$candidat->nom_complet}|{$candidat->centre_examen}",
+        "ISABEE|{$candidat->numero_candidat}|{$candidat->nom_complet}|{$candidat->numero_recu}",
         'QRCODE'
     );
 
-    /*
-    |--------------------------------------------------------------------------
-    | CODE BARRE
-    |--------------------------------------------------------------------------
-    */
     $dns1d = new DNS1D();
-    $dns1d->setStorPath(storage_path('framework/barcodes'));
+    $dns1d->setStorPath($barcodePath);
 
     $barcode = $dns1d->getBarcodePNG(
         $candidat->numero_candidat,
         'C128'
     );
 
-    /*
-    |--------------------------------------------------------------------------
-    | DATE DE GENERATION
-    |--------------------------------------------------------------------------
-    */
-     // Date de génération
     $generated_at = now()->format('d/m/Y H:i:s');
 
+    $pdf = Pdf::loadView('pdf.fiche_inscription', compact(
+        'candidat',
+        'qrCode',
+        'barcode',
+        'generated_at'
+    ))->setPaper('a4', 'portrait');
 
-    $pdf = Pdf::loadView(
-        'pdf.fiche_inscription',
-        compact(
-            'candidat',
-            'qrCode',
-            'barcode',
-            'generated_at'
-        )
-    )->setPaper('a4', 'portrait');
-
-    return $pdf->stream(
-        'fiche_'.$candidat->numero_candidat.'.pdf'
-    );
+    return $pdf->stream('fiche_' . $candidat->numero_candidat . '.pdf');
 }
+
+
     // Page formulaire complet
  public function formulaire(Request $request)
 {
@@ -370,9 +358,7 @@ class ConcoursController extends Controller
     $concours = Concours::create($validated);
 
     return redirect()
-        ->back()
-        ->with('success', 'Inscription réussie ! Votre numéro de candidat est : ' . $concours->numero_candidat)
-        ->with('candidat_id', $concours->id);
+    ->route('concours.fiche', $concours->id);
 }
  
 public function inscription()

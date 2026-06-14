@@ -5,7 +5,7 @@
 
 <style>
 @page {
-    margin: 18px 22px 82px 22px;
+    margin: 18px 22px 72px 22px;
 }
 
 * {
@@ -13,29 +13,11 @@
 }
 
 body {
-    font-family: DejaVu Sans, Arial, Helvetica, sans-serif;
-    font-size: 10px;
+    font-family: DejaVu Sans, Arial, sans-serif;
+    font-size: 9.5px;
     color: #111827;
     background: #ffffff;
 }
-
-/* =========================
-   COULEURS ISABEE
-========================= */
-
-:root {
-    --green: #0b7a4b;
-    --dark-green: #063f2b;
-    --light-green: #eaf8f0;
-    --yellow: #f4c430;
-    --blue: #28a9e0;
-    --gray: #6b7280;
-    --border: #d1d5db;
-}
-
-/* =========================
-   WATERMARK
-========================= */
 
 .watermark {
     position: fixed;
@@ -43,42 +25,30 @@ body {
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: 78px;
+    font-size: 72px;
     color: #0b7a4b;
-    opacity: 0.055;
+    opacity: 0.045;
     transform: rotate(-35deg);
     z-index: -1;
     font-weight: bold;
 }
 
-/* =========================
-   HEADER OFFICIEL
-========================= */
-
-.official-header {
+.header-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 6px;
 }
 
-.official-header td {
+.header-table td {
     width: 33.33%;
-    vertical-align: middle;
+    vertical-align: top;
     text-align: center;
-    font-size: 8.5px;
-    line-height: 11.5px;
-}
-
-.logo-zone {
-    text-align: center;
+    font-size: 8px;
+    line-height: 11px;
 }
 
 .logo-box {
-    display: inline-block;
-    border: 1.5px solid #0b7a4b;
-    border-radius: 8px;
-    padding: 5px;
-    background: #ffffff;
+    text-align: center;
 }
 
 .logo-box img {
@@ -86,55 +56,40 @@ body {
     max-width: 90px;
 }
 
-.school-name {
+.school-title {
     margin-top: 4px;
     font-size: 10px;
     font-weight: bold;
-    color: #063f2b;
+    color: #064e3b;
 }
 
-.header-line {
-    width: 100%;
+.line-green {
     height: 5px;
-    margin: 6px 0 8px;
     background: #0b7a4b;
     border-bottom: 2px solid #f4c430;
+    margin: 6px 0 8px;
 }
 
-/* =========================
-   TITRE DOCUMENT
-========================= */
-
-.document-title {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 8px;
-}
-
-.title-main {
-    background: #063f2b;
-    color: white;
+.doc-title {
+    background: #064e3b;
+    color: #ffffff;
     text-align: center;
-    padding: 9px 10px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
+    padding: 8px;
     border-radius: 6px 6px 0 0;
 }
 
-.title-sub {
+.doc-subtitle {
     background: #0b7a4b;
-    color: #eaf8f0;
+    color: #ffffff;
     text-align: center;
-    padding: 5px 10px;
     font-size: 8.5px;
-    font-style: italic;
+    padding: 5px;
     border-radius: 0 0 6px 6px;
+    margin-bottom: 8px;
 }
-
-/* =========================
-   BARRE NUMERO
-========================= */
 
 .meta-table {
     width: 100%;
@@ -145,31 +100,26 @@ body {
 .meta-table td {
     border: 1px solid #d1d5db;
     padding: 6px;
-    vertical-align: middle;
 }
 
 .meta-label {
     font-weight: bold;
-    color: #063f2b;
+    color: #064e3b;
 }
 
 .numero-box {
     background: #f4c430;
-    color: #063f2b;
+    color: #064e3b;
     text-align: center;
     font-size: 16px;
     font-weight: bold;
     letter-spacing: 1px;
 }
 
-/* =========================
-   CARTE PRINCIPALE
-========================= */
-
 .profile-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 9px;
+    margin-bottom: 8px;
 }
 
 .profile-table td {
@@ -178,77 +128,63 @@ body {
 }
 
 .photo-cell {
-    width: 23%;
+    width: 22%;
     text-align: center;
-    padding: 7px;
+    padding: 6px;
     background: #f9fafb;
 }
 
 .photo-frame {
-    width: 120px;
-    height: 140px;
+    width: 115px;
+    height: 135px;
     border: 2px solid #0b7a4b;
-    border-radius: 6px;
-    margin: 0 auto 6px;
-    text-align: center;
-    vertical-align: middle;
+    margin: 0 auto 5px;
     overflow: hidden;
     background: #ffffff;
 }
 
 .photo-frame img {
-    width: 116px;
-    height: 136px;
-    object-fit: cover;
+    width: 111px;
+    height: 131px;
 }
 
 .photo-placeholder {
-    padding-top: 55px;
+    padding-top: 54px;
     font-weight: bold;
-    color: #6b7280;
-}
-
-.photo-caption {
-    font-size: 8px;
     color: #6b7280;
 }
 
 .profile-info {
-    width: 77%;
-    padding: 0;
+    width: 78%;
 }
 
-.info-summary-table {
+.info-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.info-summary-table td {
+.info-table td {
     border: 1px solid #e5e7eb;
-    padding: 6px;
+    padding: 5px;
 }
 
-.summary-label {
-    color: #063f2b;
+.label {
     font-weight: bold;
+    color: #064e3b;
 }
 
-.summary-value {
-    font-weight: bold;
+.value {
     color: #111827;
+    font-weight: normal;
 }
-
-/* =========================
-   SECTIONS
-========================= */
 
 .section-title {
-    background: #063f2b;
-    color: white;
+    background: #064e3b;
+    color: #ffffff;
     padding: 6px 8px;
-    font-size: 10px;
+    font-size: 9.5px;
     font-weight: bold;
-    margin-top: 8px;
+    margin-top: 7px;
     border-left: 6px solid #f4c430;
     text-transform: uppercase;
 }
@@ -260,85 +196,64 @@ body {
 
 .data-table td {
     border: 1px solid #d1d5db;
-    padding: 5.5px;
+    padding: 5px;
     vertical-align: top;
-    line-height: 13px;
+    line-height: 12px;
 }
 
-.data-table .label {
-    font-weight: bold;
-    color: #063f2b;
-}
-
-.data-table .value {
-    color: #111827;
-}
-
-/* =========================
-   DOCUMENTS
-========================= */
-
-.document-status {
+.badge-ok {
     display: inline-block;
     background: #eaf8f0;
-    color: #063f2b;
+    color: #064e3b;
     border: 1px solid #0b7a4b;
     padding: 3px 6px;
     border-radius: 4px;
     font-weight: bold;
 }
 
-/* =========================
-   DECLARATION
-========================= */
+.badge-warn {
+    display: inline-block;
+    background: #fff7ed;
+    color: #9a3412;
+    border: 1px solid #fb923c;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+}
 
-.declaration-box {
-    margin-top: 10px;
+.declaration {
+    margin-top: 9px;
     border: 1px solid #0b7a4b;
     background: #f8fafc;
-    padding: 8px;
-    line-height: 14px;
-    border-radius: 6px;
-    font-size: 9.5px;
+    padding: 7px;
+    line-height: 13px;
+    font-size: 9px;
 }
-
-.declaration-box strong {
-    color: #063f2b;
-}
-
-/* =========================
-   SIGNATURES
-========================= */
 
 .signature-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 12px;
+    margin-top: 10px;
 }
 
 .signature-table td {
     width: 33.33%;
     text-align: center;
-    vertical-align: top;
-    padding: 8px 5px 0;
-    font-size: 9px;
+    padding: 7px 5px 0;
+    font-size: 8.5px;
 }
 
 .signature-line {
-    margin-top: 28px;
+    margin-top: 26px;
     border-top: 1px solid #111827;
     padding-top: 4px;
     font-weight: bold;
 }
 
-/* =========================
-   QR CODE
-========================= */
-
 .qr-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 6px;
+    margin-top: 8px;
 }
 
 .qr-table td {
@@ -346,9 +261,9 @@ body {
 }
 
 .qr-note {
-    font-size: 8.5px;
+    font-size: 8px;
     color: #6b7280;
-    line-height: 12px;
+    line-height: 11px;
 }
 
 .qr-box {
@@ -356,19 +271,15 @@ body {
 }
 
 .qr-box img {
-    width: 72px;
+    width: 70px;
 }
-
-/* =========================
-   FOOTER FIXE
-========================= */
 
 footer {
     position: fixed;
-    bottom: -65px;
+    bottom: -58px;
     left: 0;
     right: 0;
-    font-size: 8.5px;
+    font-size: 8px;
 }
 
 .footer-line {
@@ -385,7 +296,6 @@ footer {
 
 .footer-table td {
     padding: 2px;
-    vertical-align: middle;
 }
 
 .text-center {
@@ -400,10 +310,6 @@ footer {
     width: 125px;
     height: 12px;
 }
-
-.page-number {
-    font-size: 8px;
-}
 </style>
 </head>
 
@@ -411,82 +317,64 @@ footer {
 
 <div class="watermark">ISABEE 2026</div>
 
-{{-- =========================
-     HEADER OFFICIEL
-========================= --}}
-<table class="official-header">
+<table class="header-table">
     <tr>
         <td>
-            <strong>République du Cameroun</strong><br>
+            <strong>RÉPUBLIQUE DU CAMEROUN</strong><br>
             Paix – Travail – Patrie<br>
-            ****<br>
+            ********<br>
             Ministère de l’Enseignement Supérieur<br>
-            ****<br>
+            ********<br>
             <strong>UNIVERSITÉ D’EBOLOWA</strong><br>
-            ****<br>
+            ********<br>
             Institut Supérieur d’Agriculture, du Bois,<br>
             de l’Eau et de l’Environnement<br>
-            BP : 118 Ebolowa<br>
-            Tél : 694193607 / 677079747
+            BP : 118 Ebolowa
         </td>
 
-        <td class="logo-zone">
-            <div class="logo-box">
-                @if(file_exists(public_path('images/logo.jpg')))
-                    <img src="{{ public_path('images/logo.jpg') }}">
-                @elseif(file_exists(public_path('images/logo2.jpg')))
-                    <img src="{{ public_path('images/logo2.jpg') }}">
-                @endif
-            </div>
+        <td class="logo-box">
+            @if(file_exists(public_path('images/logo.jpg')))
+                <img src="{{ public_path('images/logo.jpg') }}">
+            @elseif(file_exists(public_path('images/logo2.jpg')))
+                <img src="{{ public_path('images/logo2.jpg') }}">
+            @endif
 
-            <div class="school-name">
+            <div class="school-title">
                 ISABEE<br>
                 Université d’Ebolowa
             </div>
         </td>
 
         <td>
-            <strong>Republic of Cameroon</strong><br>
+            <strong>REPUBLIC OF CAMEROON</strong><br>
             Peace – Work – Fatherland<br>
-            ****<br>
+            ********<br>
             Ministry of Higher Education<br>
-            ****<br>
+            ********<br>
             <strong>UNIVERSITY OF EBOLOWA</strong><br>
-            ****<br>
+            ********<br>
             Higher Institute of Agriculture, Forestry,<br>
             Water and Environment<br>
-            PO BOX : 118 Ebolowa<br>
-            Phone : 694193607 / 677079747
+            PO BOX : 118 Ebolowa
         </td>
     </tr>
 </table>
 
-<div class="header-line"></div>
+<div class="line-green"></div>
 
-{{-- =========================
-     TITRE
-========================= --}}
-<table class="document-title">
-    <tr>
-        <td class="title-main">
-            Récépissé de dépôt du dossier au concours d’entrée ISABEE 2026
-        </td>
-    </tr>
-    <tr>
-        <td class="title-sub">
-            Registration receipt for the entrance examination into ISABEE
-        </td>
-    </tr>
-</table>
+<div class="doc-title">
+    Fiche officielle d’inscription au concours ISABEE 2026
+</div>
 
-{{-- =========================
-     META
-========================= --}}
+<div class="doc-subtitle">
+    Récépissé généré automatiquement après validation de la préinscription en ligne
+</div>
+
 <table class="meta-table">
     <tr>
         <td width="30%">
-            <span class="meta-label">Fiche N° :</span>
-            {{ $candidat->numero_candidat ?? 'N/A' }}
+            <span class="meta-label">N° reçu CCA :</span><br>
+            {{ $candidat->numero_recu ?? 'N/A' }}
         </td>
 
         <td width="40%" class="numero-box">
@@ -494,24 +382,23 @@ footer {
         </td>
 
         <td width="30%" class="text-right">
-            <span class="meta-label">Date :</span>
-            {{ date('d/m/Y') }}
+            <span class="meta-label">Date de génération :</span><br>
+            {{ $generated_at ?? date('d/m/Y H:i:s') }}
         </td>
     </tr>
 </table>
 
-{{-- =========================
-     PROFIL CANDIDAT
-========================= --}}
 <table class="profile-table">
     <tr>
         <td class="photo-cell">
             <div class="photo-frame">
                 @php
-                    $photoPath = public_path('uploads/photos_etudiants/' . $candidat->photo_etudiant);
+                    $photoPath = $candidat->photo_etudiant
+                        ? public_path('uploads/photos_etudiants/' . $candidat->photo_etudiant)
+                        : null;
                 @endphp
 
-                @if($candidat->photo_etudiant && file_exists($photoPath))
+                @if($photoPath && file_exists($photoPath))
                     @php
                         $type = pathinfo($photoPath, PATHINFO_EXTENSION);
                         $data = file_get_contents($photoPath);
@@ -520,145 +407,105 @@ footer {
 
                     <img src="{{ $base64 }}">
                 @else
-                    <div class="photo-placeholder">PHOTO 4x4</div>
+                    <div class="photo-placeholder">PHOTO</div>
                 @endif
             </div>
 
-            <div class="photo-caption">
-                Photo du candidat
-            </div>
+            <div>Photo du candidat</div>
         </td>
 
         <td class="profile-info">
-            <table class="info-summary-table">
+            <table class="info-table">
                 <tr>
-                    <td width="35%">
-                        <span class="summary-label">Nom complet</span>
-                    </td>
-                    <td width="65%">
-                        <span class="summary-value">{{ $candidat->nom_complet ?? 'N/A' }}</span>
-                    </td>
+                    <td width="32%"><span class="label">Nom complet</span></td>
+                    <td width="68%"><strong>{{ $candidat->nom_complet ?? 'N/A' }}</strong></td>
                 </tr>
 
                 <tr>
-                    <td>
-                        <span class="summary-label">Cycle</span>
-                    </td>
-                    <td>
-                        {{ $candidat->cycle->nom_cycle ?? 'N/A' }}
-                    </td>
+                    <td><span class="label">Cycle</span></td>
+                    <td>{{ $candidat->cycle->nom_cycle ?? 'N/A' }}</td>
                 </tr>
 
                 <tr>
-                    <td>
-                        <span class="summary-label">Filière</span>
-                    </td>
-                    <td>
-                        {{ $candidat->filiere->nom_filiere ?? 'N/A' }}
-                    </td>
+                    <td><span class="label">Filière</span></td>
+                    <td>{{ $candidat->filiere->nom_filiere ?? 'N/A' }}</td>
                 </tr>
 
                 <tr>
-                    <td>
-                        <span class="summary-label">Spécialité</span>
-                    </td>
-                    <td>
-                        {{ $candidat->specialite->nom_specialite ?? 'N/A' }}
-                    </td>
+                    <td><span class="label">Spécialité / Option</span></td>
+                    <td>{{ $candidat->specialite->nom_specialite ?? 'N/A' }}</td>
                 </tr>
 
                 <tr>
-                    <td>
-                        <span class="summary-label">Centre d’examen</span>
-                    </td>
-                    <td>
-                        {{ $candidat->centre_examen ?? 'N/A' }}
-                    </td>
+                    <td><span class="label">Centre d’examen</span></td>
+                    <td>{{ $candidat->centre_examen ?? 'N/A' }}</td>
                 </tr>
 
                 <tr>
-                    <td>
-                        <span class="summary-label">Langue de composition</span>
-                    </td>
-                    <td>
-                        {{ $candidat->langue_composition ?? 'N/A' }}
-                    </td>
+                    <td><span class="label">Langue de composition</span></td>
+                    <td>{{ $candidat->langue_composition ?? 'N/A' }}</td>
                 </tr>
             </table>
         </td>
     </tr>
 </table>
 
-{{-- =========================
-     IDENTIFICATION
-========================= --}}
-<div class="section-title">1. Identification du candidat / Candidate identification</div>
+<div class="section-title">1. Identification du candidat</div>
 
 <table class="data-table">
     <tr>
-        <td width="50%">
+        <td width="40%">
             <span class="label">Nom complet :</span>
-            <span class="value">{{ $candidat->nom_complet ?? 'N/A' }}</span>
+            {{ $candidat->nom_complet ?? 'N/A' }}
         </td>
-        <td width="25%">
-            <span class="label">Sexe :</span>
-            <span class="value">{{ $candidat->sexe ?? 'N/A' }}</span>
-        </td>
-        <td width="25%">
-            <span class="label">État civil :</span>
-            <span class="value">{{ $candidat->marital ?? 'N/A' }}</span>
-        </td>
-    </tr>
 
-    <tr>
-        <td>
+        <td width="30%">
             <span class="label">Date de naissance :</span>
-            <span class="value">{{ $candidat->date_naissance ?? 'N/A' }}</span>
+            {{ $candidat->date_naissance ? \Carbon\Carbon::parse($candidat->date_naissance)->format('d/m/Y') : 'N/A' }}
         </td>
-        <td colspan="2">
-            <span class="label">Lieu de naissance :</span>
-            <span class="value">{{ $candidat->lieu_naissance ?? 'N/A' }}</span>
+
+        <td width="30%">
+            <span class="label">Lieu :</span>
+            {{ $candidat->lieu_naissance ?? 'N/A' }}
         </td>
     </tr>
 
     <tr>
         <td>
-            <span class="label">Numéro CNI :</span>
-            <span class="value">{{ $candidat->numero_nci ?? 'N/A' }}</span>
+            <span class="label">Sexe :</span>
+            {{ $candidat->sexe ?? 'N/A' }}
         </td>
-        <td colspan="2">
+
+        <td>
+            <span class="label">CNI :</span>
+            {{ $candidat->numero_nci ?? 'N/A' }}
+        </td>
+
+        <td>
             <span class="label">Nationalité :</span>
-            <span class="value">{{ $candidat->nationalite ?? 'N/A' }}</span>
+            {{ $candidat->nationalite ?? 'N/A' }}
         </td>
     </tr>
 
     <tr>
         <td>
-            <span class="label">Téléphone :</span>
-            <span class="value">{{ $candidat->telephone ?? 'N/A' }}</span>
-        </td>
-        <td colspan="2">
             <span class="label">Téléphone candidat :</span>
-            <span class="value">{{ $candidat->numero_telephone_candidat ?? 'N/A' }}</span>
+            {{ $candidat->numero_telephone_candidat ?? 'N/A' }}
         </td>
-    </tr>
 
-    <tr>
         <td>
             <span class="label">Email :</span>
-            <span class="value">{{ $candidat->email ?? 'N/A' }}</span>
+            {{ $candidat->email ?? 'N/A' }}
         </td>
-        <td colspan="2">
+
+        <td>
             <span class="label">Profession :</span>
-            <span class="value">{{ $candidat->profession ?? 'N/A' }}</span>
+            {{ $candidat->profession ?? 'N/A' }}
         </td>
     </tr>
 </table>
 
-{{-- =========================
-     FORMATION
-========================= --}}
-<div class="section-title">2. Formation sollicitée / Requested programme</div>
+<div class="section-title">2. Formation sollicitée selon la décision du concours</div>
 
 <table class="data-table">
     <tr>
@@ -666,12 +513,14 @@ footer {
             <span class="label">Cycle :</span>
             {{ $candidat->cycle->nom_cycle ?? 'N/A' }}
         </td>
+
         <td width="35%">
             <span class="label">Filière :</span>
             {{ $candidat->filiere->nom_filiere ?? 'N/A' }}
         </td>
+
         <td width="40%">
-            <span class="label">Spécialité :</span>
+            <span class="label">Spécialité / Option :</span>
             {{ $candidat->specialite->nom_specialite ?? 'N/A' }}
         </td>
     </tr>
@@ -681,10 +530,12 @@ footer {
             <span class="label">Centre :</span>
             {{ $candidat->centre_examen ?? 'N/A' }}
         </td>
+
         <td>
             <span class="label">Langue :</span>
             {{ $candidat->langue_composition ?? 'N/A' }}
         </td>
+
         <td>
             <span class="label">N° candidat :</span>
             {{ $candidat->numero_candidat ?? 'N/A' }}
@@ -692,10 +543,7 @@ footer {
     </tr>
 </table>
 
-{{-- =========================
-     LOCALISATION
-========================= --}}
-<div class="section-title">3. Localisation / Address information</div>
+<div class="section-title">3. Localisation</div>
 
 <table class="data-table">
     <tr>
@@ -703,25 +551,25 @@ footer {
             <span class="label">Pays :</span>
             {{ $candidat->pays->nom_pays ?? 'N/A' }}
         </td>
+
         <td width="25%">
             <span class="label">Région :</span>
-            {{ $candidat->region->nom_region ?? 'N/A' }}
+            {{ $candidat->region->nom_region ?? 'Non applicable' }}
         </td>
+
         <td width="25%">
             <span class="label">Département :</span>
-            {{ $candidat->departement->nom_departement ?? 'N/A' }}
+            {{ $candidat->departement->nom_departement ?? 'Non applicable' }}
         </td>
+
         <td width="25%">
             <span class="label">Arrondissement :</span>
-            {{ $candidat->arrondissement->nom_arrondissement ?? 'N/A' }}
+            {{ $candidat->arrondissement->nom_arrondissement ?? 'Non applicable' }}
         </td>
     </tr>
 </table>
 
-{{-- =========================
-     FAMILLE
-========================= --}}
-<div class="section-title">4. Parents et contact d’urgence / Parents and emergency contact</div>
+<div class="section-title">4. Informations familiales et contact d’urgence</div>
 
 <table class="data-table">
     <tr>
@@ -729,13 +577,15 @@ footer {
             <span class="label">Nom du père :</span>
             {{ $candidat->nom_pere ?? 'N/A' }}
         </td>
-        <td width="33%">
-            <span class="label">Profession :</span>
-            {{ $candidat->profession_pere ?? 'N/A' }}
-        </td>
+
         <td width="33%">
             <span class="label">Téléphone :</span>
             {{ $candidat->numero_telephone_pere ?? 'N/A' }}
+        </td>
+
+        <td width="33%">
+            <span class="label">Profession :</span>
+            {{ $candidat->profession_pere ?? 'N/A' }}
         </td>
     </tr>
 
@@ -744,69 +594,67 @@ footer {
             <span class="label">Nom de la mère :</span>
             {{ $candidat->nom_mere ?? 'N/A' }}
         </td>
-        <td>
-            <span class="label">Profession :</span>
-            {{ $candidat->profession_mere ?? 'N/A' }}
-        </td>
+
         <td>
             <span class="label">Téléphone :</span>
             {{ $candidat->numero_telephone_mere ?? 'N/A' }}
         </td>
-    </tr>
 
-    <tr>
-        <td colspan="3">
-            <span class="label">Ville des parents :</span>
-            {{ $candidat->ville_parents ?? 'N/A' }}
+        <td>
+            <span class="label">Profession :</span>
+            {{ $candidat->profession_mere ?? 'N/A' }}
         </td>
     </tr>
 
     <tr>
+        <td>
+            <span class="label">Ville des parents :</span>
+            {{ $candidat->ville_parents ?? 'N/A' }}
+        </td>
+
         <td>
             <span class="label">Contact urgence :</span>
             {{ $candidat->Personne_a_contacter_cas_urgent ?? 'N/A' }}
         </td>
+
         <td>
-            <span class="label">Téléphone :</span>
+            <span class="label">Téléphone urgence :</span>
             {{ $candidat->numero_telephone_Personne_a_contacte_urgent ?? 'N/A' }}
-        </td>
-        <td>
-            <span class="label">Ville :</span>
-            {{ $candidat->ville_Personne_a_contacte_cas_urgent ?? 'N/A' }}
         </td>
     </tr>
 </table>
 
-{{-- =========================
-     DIPLOME
-========================= --}}
-<div class="section-title">5. Diplôme et pièces jointes / Diploma and attachments</div>
+<div class="section-title">5. Diplôme d’entrée et pièces jointes</div>
 
 <table class="data-table">
     <tr>
         <td width="34%">
-            <span class="label">Diplôme présenté :</span>
+            <span class="label">Diplôme d’entrée :</span>
             {{ $candidat->diplome_entre ?? 'N/A' }}
         </td>
+
         <td width="33%">
             <span class="label">Série / Option :</span>
             {{ $candidat->serie_diplome ?? 'N/A' }}
         </td>
+
         <td width="33%">
-            <span class="label">Année :</span>
+            <span class="label">Année d’obtention :</span>
             {{ $candidat->annee_obtention_diplome ?? 'N/A' }}
         </td>
     </tr>
 
     <tr>
         <td>
-            <span class="label">Organisme émetteur :</span>
+            <span class="label">Établissement / Émetteur :</span>
             {{ $candidat->emetteur_entre_diplome ?? 'N/A' }}
         </td>
+
         <td>
             <span class="label">Moyenne :</span>
             {{ $candidat->moyenne_obtenu_diplome ?? 'N/A' }}
         </td>
+
         <td>
             <span class="label">N° diplôme :</span>
             {{ $candidat->numero_diplome_entre ?? 'N/A' }}
@@ -818,33 +666,29 @@ footer {
             <span class="label">Sport pratiqué :</span>
             {{ $candidat->sport_pratique ?? 'N/A' }}
         </td>
+
         <td>
             <span class="label">Handicap :</span>
             {{ $candidat->handicape ?? 'N/A' }}
         </td>
+
         <td>
-            <span class="label">Document scanné :</span>
+            <span class="label">Reçu CCA scanné :</span>
             @if($candidat->document_scanner)
-                <span class="document-status">Fourni</span>
+                <span class="badge-ok">Fourni</span>
             @else
-                N/A
+                <span class="badge-warn">Non fourni</span>
             @endif
         </td>
     </tr>
 </table>
 
-{{-- =========================
-     DECLARATION
-========================= --}}
-<div class="declaration-box">
+<div class="declaration">
     <strong>Déclaration du candidat :</strong>
     Je soussigné(e), certifie sur l’honneur que les informations fournies dans cette fiche sont exactes.
-    Toute fausse déclaration expose le candidat à l’annulation de son inscription au concours.
+    Toute fausse déclaration ou tout reçu non conforme peut entraîner le rejet du dossier.
 </div>
 
-{{-- =========================
-     SIGNATURES
-========================= --}}
 <table class="signature-table">
     <tr>
         <td>
@@ -856,19 +700,16 @@ footer {
         </td>
 
         <td>
-            <div class="signature-line">Examinateur du dossier</div>
+            <div class="signature-line">Contrôle du dossier</div>
         </td>
     </tr>
 </table>
 
-{{-- =========================
-     QR CODE
-========================= --}}
 <table class="qr-table">
     <tr>
         <td width="70%" class="qr-note">
-            Ce document est généré automatiquement par la plateforme officielle de préinscription ISABEE.
-            Le QR Code et le code-barres permettent de vérifier l’authenticité du dossier.
+            Cette fiche est générée automatiquement par la plateforme officielle de préinscription ISABEE.
+            Elle doit être imprimée et jointe au dossier physique avec le reçu de paiement CCA Bank Cameroun.
         </td>
 
         <td width="30%" class="qr-box">
@@ -881,29 +722,23 @@ footer {
     </tr>
 </table>
 
-{{-- =========================
-     FOOTER
-========================= --}}
 <footer>
     <div class="footer-line"></div>
 
     <table class="footer-table">
         <tr>
-            <td width="25%">
+            <td width="28%">
                 <strong>CONCOURS ISABEE 2026</strong>
             </td>
 
-            <td width="50%" class="text-center">
-                Cycle :
-                <strong>{{ $candidat->cycle->nom_cycle ?? 'N/A' }}</strong>
+            <td width="44%" class="text-center">
+                {{ $candidat->cycle->nom_cycle ?? 'N/A' }}
                 |
-                Filière :
-                <strong>{{ $candidat->filiere->nom_filiere ?? 'N/A' }}</strong>
+                {{ $candidat->filiere->nom_filiere ?? 'N/A' }}
             </td>
 
-            <td width="25%" class="text-right">
-                N°
-                <strong>{{ $candidat->numero_candidat ?? 'N/A' }}</strong>
+            <td width="28%" class="text-right">
+                N° <strong>{{ $candidat->numero_candidat ?? 'N/A' }}</strong>
             </td>
         </tr>
 
@@ -918,8 +753,7 @@ footer {
         <tr>
             <td colspan="3" class="text-center">
                 ISABEE - Université d’Ebolowa |
-                Document généré automatiquement le
-                <strong>{{ $generated_at ?? date('d/m/Y H:i:s') }}</strong>
+                Document généré le <strong>{{ $generated_at ?? date('d/m/Y H:i:s') }}</strong>
             </td>
         </tr>
     </table>

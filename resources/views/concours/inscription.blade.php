@@ -516,6 +516,16 @@
                             <strong>Compte N° 10039-10012-00272771401-79</strong>
                         </div>
                     </div>
+                    <div class="note-box">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+
+    <p>
+        Les droits d’inscription au concours s’élèvent à
+        <strong>20 000 FCFA</strong>. Le paiement se fait uniquement à la
+        <strong>CCA Bank Cameroun</strong>. Le reçu doit être conservé,
+        scanné clairement et joint au formulaire en ligne. Taille maximale du fichier : 1 Mo.
+    </p>
+</div>
 
                     <div class="note-box">
                         <i class="fa-solid fa-triangle-exclamation"></i>
@@ -622,7 +632,10 @@
 
                         <div class="document-item">
                             <i class="fa-solid fa-receipt"></i>
-                            <span>Le reçu de paiement des frais de concours.</span>
+                           <span>
+    Reçu de paiement CCA Bank Cameroun clair et lisible.
+    Ce reçu doit aussi être scanné dans le formulaire en ligne.
+</span>
                         </div>
 
                     </div>
