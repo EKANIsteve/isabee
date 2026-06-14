@@ -2,21 +2,21 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>ISABEE - Université d’Ebolowa</title>
+
+    <title>@yield('title', 'ISABEE - Université d’Ebolowa')</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {{-- VITE --}}
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-{{-- CSS PUBLIC AVEC VERSION POUR ÉVITER LE CACHE --}}
+    {{-- CSS public concours si ton formulaire concours l’utilise encore --}}
+    <link rel="stylesheet" href="{{ asset('css/concours.css') }}?v={{ time() }}">
 
-<link rel="stylesheet" href="{{ asset('css/concours.css') }}?v={{ time() }}">
+    {{-- Font Awesome --}}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-{{-- FONT AWESOME --}}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     @stack('styles')
-    @stack('scripts')
-    
 </head>
 
 <body>
@@ -41,7 +41,7 @@
 <div class="info-bar">
     <div class="info-contact">
         <span><i class="fa-solid fa-location-dot"></i> BP: 118 Ebolowa, Cameroun</span>
-        <span><i class="fa-solid fa-phone"></i> +237 694193607 / 677079747</span>
+        <span><i class="fa-solid fa-phone"></i> +237 694 193 607 / 677 079 747</span>
         <span><i class="fa-solid fa-envelope"></i> contact@isabee.cm</span>
     </div>
 
@@ -52,10 +52,10 @@
                     <a href="{{ $annonce->lien ?? '#' }}">{{ $annonce->titre }}</a>
                     &nbsp; — &nbsp;
                 @empty
-                    Bienvenue sur le site officiel de l’ISABEE Ebolowa —
+                    Concours ISABEE 2026 — Inscriptions ouvertes — Date du concours : 25 octobre 2026 —
                 @endforelse
             @else
-                Bienvenue sur le site officiel de l’ISABEE Ebolowa —
+                Concours ISABEE 2026 — Inscriptions ouvertes — Date du concours : 25 octobre 2026 —
             @endisset
         </marquee>
     </div>
@@ -67,6 +67,7 @@
 
         <a href="{{ url('/') }}" class="brand">
             <img src="{{ asset('images/logo.jpg') }}" alt="Logo ISABEE">
+
             <div>
                 <h1>ISABEE</h1>
                 <p>Université d’Ebolowa</p>
@@ -79,33 +80,49 @@
 
         <nav class="main-nav" id="mainNav">
             <ul>
-                <li><a href="{{ url('/') }}">Accueil</a></li>
+                <li>
+                    <a href="{{ url('/') }}">Accueil</a>
+                </li>
 
                 <li class="dropdown">
-                    <a href="#">Formations <i class="fa-solid fa-angle-down"></i></a>
+                    <a href="#">
+                        Formations
+                        <i class="fa-solid fa-angle-down"></i>
+                    </a>
+
                     <ul class="dropdown-menu">
-                        <li><a href="#">Licence</a></li>
-                        <li><a href="#">Master</a></li>
                         <li><a href="#">Cycle Ingénieur</a></li>
+                        <li><a href="#">Architecture</a></li>
+                        <li><a href="#">Urbanisme</a></li>
                         <li><a href="{{ route('formation.continue') }}">Formation Continue</a></li>
                     </ul>
                 </li>
 
                 <li class="dropdown">
-                    <a href="#">Départements <i class="fa-solid fa-angle-down"></i></a>
+                    <a href="#">
+                        Départements
+                        <i class="fa-solid fa-angle-down"></i>
+                    </a>
+
                     <ul class="dropdown-menu">
-                        <li><a href="#">Agriculture</a></li>
-                        <li><a href="#">Sciences du bois</a></li>
-                        <li><a href="#">Gestion de l’eau</a></li>
-                        <li><a href="#">Environnement</a></li>
+                        <li><a href="#">Agriculture, Élevage et Sciences Halieutiques</a></li>
+                        <li><a href="#">Foresterie et Sciences du Bois</a></li>
+                        <li><a href="#">Hydraulique et Sciences de l’Eau</a></li>
+                        <li><a href="#">Sciences de l’Environnement</a></li>
+                        <li><a href="#">Énergies Renouvelables</a></li>
                     </ul>
                 </li>
 
-                <li><a href="#">Scolarité</a></li>
-                <li><a href="#">Espace Étudiant</a></li>
+                <li>
+                    <a href="#">Scolarité</a>
+                </li>
 
                 <li class="dropdown">
-                    <a href="#">Concours <i class="fa-solid fa-angle-down"></i></a>
+                    <a href="#">
+                        Concours
+                        <i class="fa-solid fa-angle-down"></i>
+                    </a>
+
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('/concours/admission') }}">Admission</a></li>
                         <li><a href="{{ url('/concours/communique') }}">Communiqué</a></li>
@@ -115,8 +132,13 @@
                     </ul>
                 </li>
 
-                <li><a href="#">Actualités</a></li>
-                <li><a href="#">Contact</a></li>
+                <li>
+                    <a href="#">Actualités</a>
+                </li>
+
+                <li>
+                    <a href="#">Contact</a>
+                </li>
             </ul>
         </nav>
 
@@ -139,9 +161,10 @@
 
     <div class="container footer-main">
 
-        <div class="footer-brand footer-animate">
+        <div class="footer-brand">
             <div class="footer-logo-box">
                 <img src="{{ asset('images/logo.jpg') }}" alt="Logo ISABEE">
+
                 <div>
                     <h3>ISABEE</h3>
                     <span>Université d’Ebolowa</span>
@@ -156,25 +179,27 @@
 
             <div class="footer-socials">
                 <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
                 <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
                 <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
             </div>
         </div>
 
-        <div class="footer-column footer-animate">
+        <div class="footer-column">
             <h4>Liens rapides</h4>
+
             <ul>
                 <li><a href="{{ url('/') }}"><i class="fa-solid fa-angle-right"></i> Accueil</a></li>
                 <li><a href="#"><i class="fa-solid fa-angle-right"></i> Formations</a></li>
                 <li><a href="#"><i class="fa-solid fa-angle-right"></i> Départements</a></li>
-                <li><a href="#"><i class="fa-solid fa-angle-right"></i> Actualités</a></li>
+                <li><a href="{{ route('concours.inscription') }}"><i class="fa-solid fa-angle-right"></i> Concours</a></li>
                 <li><a href="#"><i class="fa-solid fa-angle-right"></i> Contact</a></li>
             </ul>
         </div>
 
-        <div class="footer-column footer-animate">
+        <div class="footer-column">
             <h4>Formations</h4>
+
             <ul>
                 <li><a href="#"><i class="fa-solid fa-angle-right"></i> Agriculture</a></li>
                 <li><a href="#"><i class="fa-solid fa-angle-right"></i> Sciences du bois</a></li>
@@ -184,19 +209,21 @@
             </ul>
         </div>
 
-        <div class="footer-contact footer-animate">
+        <div class="footer-contact">
             <h4>Contact</h4>
 
             <div class="contact-item">
                 <i class="fa-solid fa-location-dot"></i>
+
                 <div>
                     <strong>Adresse</strong>
-                    <span>Ebolowa, Cameroun</span>
+                    <span>BP 118, Ebolowa, Cameroun</span>
                 </div>
             </div>
 
             <div class="contact-item">
                 <i class="fa-solid fa-envelope"></i>
+
                 <div>
                     <strong>Email</strong>
                     <span>contact@isabee.cm</span>
@@ -205,9 +232,10 @@
 
             <div class="contact-item">
                 <i class="fa-solid fa-phone"></i>
+
                 <div>
                     <strong>Téléphone</strong>
-                    <span>+237 694193607</span>
+                    <span>+237 694 193 607 / 677 079 747</span>
                 </div>
             </div>
         </div>
@@ -232,61 +260,9 @@
 
 </footer>
 
-{{-- JS PUBLIC --}}
+{{-- JS public si tes pages concours en dépendent encore --}}
 <script src="{{ asset('js/concours.js') }}" defer></script>
 <script src="{{ asset('js/inscription.js') }}" defer></script>
-
-<script>
-    function forceHidePreloader() {
-        const preloader = document.getElementById('preloader');
-
-        if (preloader) {
-            preloader.classList.add('hide');
-
-            setTimeout(function () {
-                preloader.style.display = 'none';
-            }, 500);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        setTimeout(forceHidePreloader, 700);
-
-        const menuToggle = document.getElementById('menuToggle');
-        const mainNav = document.getElementById('mainNav');
-
-        if (menuToggle && mainNav) {
-            menuToggle.addEventListener('click', function () {
-                mainNav.classList.toggle('active');
-            });
-        }
-
-        const backToTop = document.getElementById('backToTop');
-
-        if (backToTop) {
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 300) {
-                    backToTop.classList.add('show');
-                } else {
-                    backToTop.classList.remove('show');
-                }
-            });
-
-            backToTop.addEventListener('click', function () {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        }
-    });
-
-    window.addEventListener('load', function () {
-        forceHidePreloader();
-    });
-
-    setTimeout(forceHidePreloader, 2500);
-</script>
 
 @stack('scripts')
 
