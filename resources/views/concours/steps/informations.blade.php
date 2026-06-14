@@ -80,24 +80,18 @@
         </div>
 
         <div class="field">
-            <label>Téléphone</label>
-            <div class="input-icon">
-                <i class="fa-solid fa-phone"></i>
-                <input type="text"
-                       name="telephone"
-                       value="{{ old('telephone', $candidat->telephone ?? '') }}"
-                       placeholder="6XXXXXXXX">
-            </div>
-        </div>
-
-        <div class="field">
-            <label>Téléphone candidat</label>
+            <label>Téléphone candidat <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-mobile-screen"></i>
                 <input type="text"
                        name="numero_telephone_candidat"
                        value="{{ old('numero_telephone_candidat', $candidat->numero_telephone_candidat ?? '') }}"
-                       placeholder="6XXXXXXXX">
+                       placeholder="Ex : 673045601"
+                       pattern="[0-9]{9}"
+                       minlength="9"
+                       maxlength="9"
+                       inputmode="numeric"
+                       required>
             </div>
         </div>
 
@@ -154,51 +148,26 @@
         </div>
 
         <div class="field">
-    <label>Profession <span>*</span></label>
-
-    <div class="input-icon">
-        <i class="fa-solid fa-briefcase"></i>
-
-        <select name="profession" required>
-            <option value="">Choisir</option>
-
-            <option value="ETUDIANT"
-                {{ old('profession', $candidat->profession ?? '') == 'ETUDIANT' ? 'selected' : '' }}>
-                Étudiant
-            </option>
-
-            <option value="FONCTIONNAIRE"
-                {{ old('profession', $candidat->profession ?? '') == 'FONCTIONNAIRE' ? 'selected' : '' }}>
-                Fonctionnaire
-            </option>
-
-            <option value="AUTRE"
-                {{ old('profession', $candidat->profession ?? '') == 'AUTRE' ? 'selected' : '' }}>
-                Autre
-            </option>
-        </select>
-    </div>
-</div>       name="profession"
-                       value="{{ old('profession', $candidat->profession ?? '') }}"
-                       placeholder="Profession">
-            </div>
-        </div>
-
-        <div class="field">
-            <label>Langue de composition <span>*</span></label>
+            <label>Profession <span>*</span></label>
             <div class="input-icon">
-                <i class="fa-solid fa-language"></i>
-                <select name="langue_composition" required>
+                <i class="fa-solid fa-briefcase"></i>
+
+                <select name="profession" required>
                     <option value="">Choisir</option>
 
-                    <option value="Français"
-                        {{ old('langue_composition', $candidat->langue_composition ?? '') == 'Français' ? 'selected' : '' }}>
-                        Français
+                    <option value="ETUDIANT"
+                        {{ old('profession', $candidat->profession ?? '') == 'ETUDIANT' ? 'selected' : '' }}>
+                        Étudiant
                     </option>
 
-                    <option value="Anglais"
-                        {{ old('langue_composition', $candidat->langue_composition ?? '') == 'Anglais' ? 'selected' : '' }}>
-                        Anglais
+                    <option value="FONCTIONNAIRE"
+                        {{ old('profession', $candidat->profession ?? '') == 'FONCTIONNAIRE' ? 'selected' : '' }}>
+                        Fonctionnaire
+                    </option>
+
+                    <option value="AUTRE"
+                        {{ old('profession', $candidat->profession ?? '') == 'AUTRE' ? 'selected' : '' }}>
+                        Autre
                     </option>
                 </select>
             </div>
