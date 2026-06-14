@@ -7,7 +7,7 @@
 
         <div>
             <h3>Formation sollicitée</h3>
-            <p>Choisissez le cycle, la filière, la spécialité et le centre d’examen.</p>
+            <p>Choisissez le cycle, la filière, la spécialité, le centre d’examen et la langue de composition.</p>
         </div>
     </div>
 
@@ -113,6 +113,28 @@
             </div>
         </div>
 
+        <div class="field">
+            <label for="langue_composition">Langue de composition <span>*</span></label>
+
+            <div class="input-icon">
+                <i class="fa-solid fa-language"></i>
+
+                <select name="langue_composition" id="langue_composition" required>
+                    <option value="">Choisir une langue</option>
+
+                    <option value="Français"
+                        {{ old('langue_composition', $candidat->langue_composition ?? '') == 'Français' ? 'selected' : '' }}>
+                        Français
+                    </option>
+
+                    <option value="Anglais"
+                        {{ old('langue_composition', $candidat->langue_composition ?? '') == 'Anglais' ? 'selected' : '' }}>
+                        Anglais
+                    </option>
+                </select>
+            </div>
+        </div>
+
     </div>
 
     <div class="form-actions">
@@ -123,25 +145,5 @@
             <i class="fa-solid fa-arrow-right"></i>
         </button>
     </div>
-<div class="field">
-    <label for="langue_composition">Langue de composition <span>*</span></label>
 
-    <div class="input-icon">
-        <i class="fa-solid fa-language"></i>
-
-        <select name="langue_composition" id="langue_composition" required>
-            <option value="">Choisir une langue</option>
-
-            <option value="Français"
-                {{ old('langue_composition', $candidat->langue_composition ?? '') == 'Français' ? 'selected' : '' }}>
-                Français
-            </option>
-
-            <option value="Anglais"
-                {{ old('langue_composition', $candidat->langue_composition ?? '') == 'Anglais' ? 'selected' : '' }}>
-                Anglais
-            </option>
-        </select>
-    </div>
-</div>
 </div>
