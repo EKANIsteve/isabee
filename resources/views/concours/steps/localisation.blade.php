@@ -7,7 +7,10 @@
 
         <div>
             <h3>Localisation du candidat</h3>
-            <p>Renseignez le pays, la région, le département et l’arrondissement.</p>
+            <p>
+                Sélectionnez le pays. Si le pays est Cameroon, les régions, départements
+                et arrondissements seront chargés automatiquement.
+            </p>
         </div>
     </div>
 
@@ -24,6 +27,7 @@
 
                     @foreach($pays as $item)
                         <option value="{{ $item->id }}"
+                            data-cameroon="{{ in_array($item->nom_pays, ['Cameroon', 'Cameroun']) ? '1' : '0' }}"
                             {{ old('pays_id', $candidat->pays_id ?? '') == $item->id ? 'selected' : '' }}>
                             {{ $item->nom_pays }}
                         </option>
@@ -33,64 +37,43 @@
         </div>
 
         <div class="field">
-            <label for="region_select">Région <span>*</span></label>
+            <label for="region_select">Région</label>
 
             <div class="input-icon">
                 <i class="fa-solid fa-map-location-dot"></i>
 
-                <select name="region_id" id="region_select" required>
+                <select name="region_id"
+                        id="region_select"
+                        data-selected="{{ old('region_id', $candidat->region_id ?? '') }}">
                     <option value="">Sélectionner une région</option>
-
-                    @isset($regions)
-                        @foreach($regions as $region)
-                            <option value="{{ $region->id }}"
-                                {{ old('region_id', $candidat->region_id ?? '') == $region->id ? 'selected' : '' }}>
-                                {{ $region->nom_region }}
-                            </option>
-                        @endforeach
-                    @endisset
                 </select>
             </div>
         </div>
 
         <div class="field">
-            <label for="departement_select">Département <span>*</span></label>
+            <label for="departement_select">Département</label>
 
             <div class="input-icon">
                 <i class="fa-solid fa-map"></i>
 
-                <select name="departement_id" id="departement_select" required>
+                <select name="departement_id"
+                        id="departement_select"
+                        data-selected="{{ old('departement_id', $candidat->departement_id ?? '') }}">
                     <option value="">Sélectionner un département</option>
-
-                    @isset($departements)
-                        @foreach($departements as $departement)
-                            <option value="{{ $departement->id }}"
-                                {{ old('departement_id', $candidat->departement_id ?? '') == $departement->id ? 'selected' : '' }}>
-                                {{ $departement->nom_departement }}
-                            </option>
-                        @endforeach
-                    @endisset
                 </select>
             </div>
         </div>
 
         <div class="field">
-            <label for="arrondissement_select">Arrondissement <span>*</span></label>
+            <label for="arrondissement_select">Arrondissement</label>
 
             <div class="input-icon">
                 <i class="fa-solid fa-location-crosshairs"></i>
 
-                <select name="arrondissement_id" id="arrondissement_select" required>
+                <select name="arrondissement_id"
+                        id="arrondissement_select"
+                        data-selected="{{ old('arrondissement_id', $candidat->arrondissement_id ?? '') }}">
                     <option value="">Sélectionner un arrondissement</option>
-
-                    @isset($arrondissements)
-                        @foreach($arrondissements as $arrondissement)
-                            <option value="{{ $arrondissement->id }}"
-                                {{ old('arrondissement_id', $candidat->arrondissement_id ?? '') == $arrondissement->id ? 'selected' : '' }}>
-                                {{ $arrondissement->nom_arrondissement }}
-                            </option>
-                        @endforeach
-                    @endisset
                 </select>
             </div>
         </div>

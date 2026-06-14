@@ -156,5 +156,163 @@
     </div>
 
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const paysSelect = document.getElementById('pays_select');
+    const regionSelect = document.getElementById('region_select');
+    const departementSelect = document.getElementById('departement_select');
+    const arrondissementSelect = document.getElementById('arrondissement_select');
 
+    if (!paysSelect || !regionSelect || !departementSelect || !arrondissementSelect) {
+        return;
+    }
+
+    function resetSelect(select, text) {
+        select.innerHTML = `<option value="">${text}</option>`;
+    }
+
+    function disableLocalisation() {
+        resetSelect(regionSelect, 'Non applicable');
+        resetSelect(departementSelect, 'Non applicable');
+        resetSelect(arrondissementSelect, 'Non applicable');
+
+        regionSelect.disabled = true;
+        departementSelect.disabled = true;
+        arrondissementSelect.disabled = true;
+
+        regionSelect.required = false;
+        departementSelect.required = false;
+        arrondissementSelect.required = false;
+    }
+
+    function enableLocalisation() {
+        regionSelect.disabled = false;
+        departementSelect.disabled = false;
+        arrondissementSelect.disabled = false;
+
+        regionSelect.required = true;
+        departementSelect.required = true;
+        arrondissementSelect.required = true;
+    }
+
+    function isCameroonSelected() {
+        const option = paysSelect.options[paysSelect.selectedIndex];
+        return option && option.dataset.cameroon === '1';
+    }
+
+    function loadRegions(selectedRegion = null) {
+        const paysId = paysSelect.value;
+
+        if (!paysId || !isCameroonSelected()) {
+            disableLocalisation();
+            return;
+        }
+
+        enableLocalisation();
+
+        resetSelect(regionSelect, 'Chargement...');
+        resetSelect(departementSelect, 'Sélectionner un département');
+        resetSelect(arrondissementSelect, 'Sélectionner un arrondissement');
+
+        fetch(`/localisation/regions/${paysId}`)
+            .then(response => response.json())
+            .then(data => {
+                resetSelect(regionSelect, 'Sélectionner une région');
+
+                data.forEach(region => {
+                    const selected = selectedRegion == region.id ? 'selected' : '';
+
+                    regionSelect.innerHTML += `
+                        <option value="${region.id}" ${selected}>
+                            ${region.nom_region}
+                        </option>
+                    `;
+                });
+
+                if (selectedRegion) {
+                    loadDepartements(departementSelect.dataset.selected);
+                }
+            });
+    }
+
+    function loadDepartements(selectedDepartement = null) {
+        const regionId = regionSelect.value;
+
+        resetSelect(departementSelect, 'Chargement...');
+        resetSelect(arrondissementSelect, 'Sélectionner un arrondissement');
+
+        if (!regionId) {
+            resetSelect(departementSelect, 'Sélectionner un département');
+            return;
+        }
+
+        fetch(`/localisation/departements/${regionId}`)
+            .then(response => response.json())
+            .then(data => {
+                resetSelect(departementSelect, 'Sélectionner un département');
+
+                data.forEach(departement => {
+                    const selected = selectedDepartement == departement.id ? 'selected' : '';
+
+                    departementSelect.innerHTML += `
+                        <option value="${departement.id}" ${selected}>
+                            ${departement.nom_departement}
+                        </option>
+                    `;
+                });
+
+                if (selectedDepartement) {
+                    loadArrondissements(arrondissementSelect.dataset.selected);
+                }
+            });
+    }
+
+    function loadArrondissements(selectedArrondissement = null) {
+        const departementId = departementSelect.value;
+
+        resetSelect(arrondissementSelect, 'Chargement...');
+
+        if (!departementId) {
+            resetSelect(arrondissementSelect, 'Sélectionner un arrondissement');
+            return;
+        }
+
+        fetch(`/localisation/arrondissements/${departementId}`)
+            .then(response => response.json())
+            .then(data => {
+                resetSelect(arrondissementSelect, 'Sélectionner un arrondissement');
+
+                data.forEach(arrondissement => {
+                    const selected = selectedArrondissement == arrondissement.id ? 'selected' : '';
+
+                    arrondissementSelect.innerHTML += `
+                        <option value="${arrondissement.id}" ${selected}>
+                            ${arrondissement.nom_arrondissement}
+                        </option>
+                    `;
+                });
+            });
+    }
+
+    paysSelect.addEventListener('change', function () {
+        regionSelect.dataset.selected = '';
+        departementSelect.dataset.selected = '';
+        arrondissementSelect.dataset.selected = '';
+        loadRegions();
+    });
+
+    regionSelect.addEventListener('change', function () {
+        departementSelect.dataset.selected = '';
+        arrondissementSelect.dataset.selected = '';
+        loadDepartements();
+    });
+
+    departementSelect.addEventListener('change', function () {
+        arrondissementSelect.dataset.selected = '';
+        loadArrondissements();
+    });
+
+    loadRegions(regionSelect.dataset.selected);
+});
+</script>
 @endsection

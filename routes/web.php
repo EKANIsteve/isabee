@@ -188,6 +188,9 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/imprimer-liste-centre-repartie', [DashboardController::class, 'imprimerListeCentreRepartie'])
     ->name('imprimer.liste.centre.repartie');
+    Route::get('/localisation/regions/{pays}', [ConcoursController::class, 'getRegions']);
+Route::get('/localisation/departements/{region}', [ConcoursController::class, 'getDepartements']);
+Route::get('/localisation/arrondissements/{departement}', [ConcoursController::class, 'getArrondissements']);
 
 
 require __DIR__.'/auth.php';

@@ -132,8 +132,14 @@ class ConcoursController extends Controller
     ));
 }
     // Stockage des données
-  public function store(Request $request)
+ public function store(Request $request)
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Validation principale
+    |--------------------------------------------------------------------------
+    */
+
     $validated = $request->validate([
         'numero_recu' => 'required|string|max:255|unique:concours,numero_recu',
 
@@ -142,37 +148,39 @@ class ConcoursController extends Controller
         'specialite_id' => 'required|exists:specialites,id',
 
         'pays_id' => 'required|exists:pays,id',
-        'region_id' => 'required|exists:regions,id',
-        'departement_id' => 'required|exists:departements,id',
-        'arrondissement_id' => 'required|exists:arrondissements,id',
+        'region_id' => 'nullable|exists:regions,id',
+        'departement_id' => 'nullable|exists:departements,id',
+        'arrondissement_id' => 'nullable|exists:arrondissements,id',
 
         'centre_examen' => 'required|string|in:Bertoua,Douala,Dschang,Ebolowa,Garoua,Meyomessala,Yaounde',
+        'langue_composition' => 'required|in:Français,Anglais',
 
         'nom_complet' => 'required|string|max:255',
         'date_naissance' => 'required|date',
         'lieu_naissance' => 'required|string|max:255',
 
         'numero_nci' => 'nullable|string|max:255',
-        'sexe' => 'nullable|string|max:255',
-        'telephone' => 'nullable|string|max:255',
+        'sexe' => 'required|in:Masculin,Féminin',
+
+        // téléphone supprimé
+        'numero_telephone_candidat' => 'required|digits:9',
+
         'email' => 'nullable|email|max:255',
         'nationalite' => 'nullable|string|max:255',
         'marital' => 'nullable|string|max:255',
-       'profession' => 'required|in:ETUDIANT,FONCTIONNAIRE,AUTRE',
-        'numero_telephone_candidat' => 'nullable|string|max:255',
-        'langue_composition' => 'nullable|string|max:255',
+        'profession' => 'required|in:ETUDIANT,FONCTIONNAIRE,AUTRE',
 
         'nom_pere' => 'nullable|string|max:255',
-        'numero_telephone_pere' => 'nullable|string|max:255',
+        'numero_telephone_pere' => 'nullable|digits:9',
         'profession_pere' => 'nullable|string|max:255',
 
         'nom_mere' => 'nullable|string|max:255',
         'profession_mere' => 'nullable|string|max:255',
-        'numero_telephone_mere' => 'nullable|string|max:255',
+        'numero_telephone_mere' => 'nullable|digits:9',
         'ville_parents' => 'nullable|string|max:255',
 
         'Personne_a_contacter_cas_urgent' => 'nullable|string|max:255',
-        'numero_telephone_Personne_a_contacte_urgent' => 'nullable|string|max:255',
+        'numero_telephone_Personne_a_contacte_urgent' => 'nullable|digits:9',
         'ville_Personne_a_contacte_cas_urgent' => 'nullable|string|max:255',
 
         'diplome_entre' => 'nullable|string|max:255',
@@ -186,11 +194,85 @@ class ConcoursController extends Controller
         'handicape' => 'nullable|string|max:255',
 
         'photo_etudiant' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        'document_scanner' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'document_scanner' => 'nullable|mimes:pdf,jpg,jpeg,png|max:4096',
     ], [
-        'centre_examen.in' => 'Le centre d’examen choisi est invalide.',
+        'numero_recu.required' => 'Le numéro de transaction est obligatoire.',
         'numero_recu.unique' => 'Ce numéro de transaction est déjà utilisé.',
+
+        'cycle_id.required' => 'Le cycle est obligatoire.',
+        'filiere_id.required' => 'La filière est obligatoire.',
+        'specialite_id.required' => 'La spécialité est obligatoire.',
+
+        'pays_id.required' => 'Le pays est obligatoire.',
+        'region_id.required' => 'La région est obligatoire pour le Cameroun.',
+        'departement_id.required' => 'Le département est obligatoire pour le Cameroun.',
+        'arrondissement_id.required' => 'L’arrondissement est obligatoire pour le Cameroun.',
+
+        'centre_examen.in' => 'Le centre d’examen choisi est invalide.',
+        'langue_composition.required' => 'La langue de composition est obligatoire.',
+        'langue_composition.in' => 'La langue de composition doit être Français ou Anglais.',
+
+        'numero_telephone_candidat.required' => 'Le numéro de téléphone du candidat est obligatoire.',
+        'numero_telephone_candidat.digits' => 'Le numéro de téléphone du candidat doit contenir exactement 9 chiffres.',
+
+        'email.email' => 'L’adresse e-mail doit avoir un format valide.',
+
+        'numero_telephone_pere.digits' => 'Le numéro de téléphone du père doit contenir exactement 9 chiffres.',
+        'numero_telephone_mere.digits' => 'Le numéro de téléphone de la mère doit contenir exactement 9 chiffres.',
+        'numero_telephone_Personne_a_contacte_urgent.digits' => 'Le numéro de la personne à contacter doit contenir exactement 9 chiffres.',
     ]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Vérification localisation Cameroun / étranger
+    |--------------------------------------------------------------------------
+    */
+
+    $pays = Pays::findOrFail($validated['pays_id']);
+
+    $isCameroon = in_array($pays->nom_pays, ['Cameroon', 'Cameroun'], true);
+
+    if ($isCameroon) {
+        $request->validate([
+            'region_id' => 'required|exists:regions,id',
+            'departement_id' => 'required|exists:departements,id',
+            'arrondissement_id' => 'required|exists:arrondissements,id',
+        ], [
+            'region_id.required' => 'La région est obligatoire pour le Cameroun.',
+            'departement_id.required' => 'Le département est obligatoire pour le Cameroun.',
+            'arrondissement_id.required' => 'L’arrondissement est obligatoire pour le Cameroun.',
+        ]);
+    } else {
+        $validated['region_id'] = null;
+        $validated['departement_id'] = null;
+        $validated['arrondissement_id'] = null;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Vérification cohérence cycle → filière → spécialité
+    |--------------------------------------------------------------------------
+    */
+
+    $filiereValide = Filiere::where('id', $validated['filiere_id'])
+        ->where('cycle_id', $validated['cycle_id'])
+        ->exists();
+
+    if (!$filiereValide) {
+        return back()
+            ->withErrors(['filiere_id' => 'La filière choisie ne correspond pas au cycle sélectionné.'])
+            ->withInput();
+    }
+
+    $specialiteValide = Specialite::where('id', $validated['specialite_id'])
+        ->where('filiere_id', $validated['filiere_id'])
+        ->exists();
+
+    if (!$specialiteValide) {
+        return back()
+            ->withErrors(['specialite_id' => 'La spécialité choisie ne correspond pas à la filière sélectionnée.'])
+            ->withInput();
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -223,62 +305,60 @@ class ConcoursController extends Controller
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | Génération du numéro candidat
-    |--------------------------------------------------------------------------
-    | Les deux premières lettres viennent du centre.
-    | Le numéro est continu globalement pour tous les centres.
-    |
-    | Exemple :
-    | BE0001
-    | DO0002
-    | DS0003
-    | EB0004
-    | GA0005
-    | ME0006
-    | YA0007
-    |--------------------------------------------------------------------------
-    */
+    /*
+|--------------------------------------------------------------------------
+| Génération du numéro candidat
+|--------------------------------------------------------------------------
+| Le préfixe dépend du centre d’examen.
+| Le numéro est continu globalement, quel que soit le centre choisi.
+|
+| Exemple :
+| BE0001
+| DO0002
+| YA0003
+| EB0004
+|--------------------------------------------------------------------------
+*/
 
-    $prefixes = [
-        'Bertoua' => 'BE',
-        'Douala' => 'DO',
-        'Dschang' => 'DS',
-        'Ebolowa' => 'EB',
-        'Garoua' => 'GA',
-        'Meyomessala' => 'ME',
-        'Yaounde' => 'YA',
-    ];
+$prefixes = [
+    'Bertoua' => 'BE',
+    'Douala' => 'DO',
+    'Dschang' => 'DS',
+    'Ebolowa' => 'EB',
+    'Garoua' => 'GA',
+    'Meyomessala' => 'ME',
+    'Yaounde' => 'YA',
+];
 
-    $centre = $validated['centre_examen'];
-    $prefix = $prefixes[$centre];
+$centre = $validated['centre_examen'];
+$prefix = $prefixes[$centre];
 
-    $lastCandidat = Concours::whereNotNull('numero_candidat')
-        ->orderBy('id', 'desc')
-        ->first();
+$lastCandidat = Concours::whereNotNull('numero_candidat')
+    ->orderBy('id', 'desc')
+    ->first();
 
-    if ($lastCandidat && $lastCandidat->numero_candidat) {
-        $lastNumber = (int) substr($lastCandidat->numero_candidat, -4);
-        $nextNumber = $lastNumber + 1;
-    } else {
-        $nextNumber = 1;
+if ($lastCandidat && $lastCandidat->numero_candidat) {
+    // On enlève les 2 lettres du centre : BE0001 devient 0001
+    $lastNumber = (int) substr($lastCandidat->numero_candidat, 2);
+    $nextNumber = $lastNumber + 1;
+} else {
+    $nextNumber = 1;
+}
+
+do {
+    $numeroCandidat = $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
+    $exists = Concours::where('numero_candidat', $numeroCandidat)->exists();
+
+    if ($exists) {
+        $nextNumber++;
     }
+} while ($exists);
 
-    do {
-        $numeroCandidat = $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
-
-        $exists = Concours::where('numero_candidat', $numeroCandidat)->exists();
-
-        if ($exists) {
-            $nextNumber++;
-        }
-    } while ($exists);
-
-    $validated['numero_candidat'] = $numeroCandidat;
-
+$validated['numero_candidat'] = $numeroCandidat;
     /*
     |--------------------------------------------------------------------------
-    | Création de l'inscription
+    | Création inscription
     |--------------------------------------------------------------------------
     */
 
@@ -512,6 +592,39 @@ public function update(Request $request, $id)
     return redirect()
         ->route('concours.fiche', $candidat->id)
         ->with('success', 'Inscription modifiée avec succès.');
+}
+
+public function getRegions($paysId)
+{
+    $pays = Pays::findOrFail($paysId);
+
+    if (!in_array($pays->nom_pays, ['Cameroon', 'Cameroun'])) {
+        return response()->json([]);
+    }
+
+    return response()->json(
+        Region::where('pays_id', $paysId)
+            ->orderBy('nom_region')
+            ->get(['id', 'nom_region'])
+    );
+}
+
+public function getDepartements($regionId)
+{
+    return response()->json(
+        Departement::where('region_id', $regionId)
+            ->orderBy('nom_departement')
+            ->get(['id', 'nom_departement'])
+    );
+}
+
+public function getArrondissements($departementId)
+{
+    return response()->json(
+        Arrondissement::where('departement_id', $departementId)
+            ->orderBy('nom_arrondissement')
+            ->get(['id', 'nom_arrondissement'])
+    );
 }
 
 }
