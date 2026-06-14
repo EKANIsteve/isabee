@@ -123,5 +123,25 @@
             <i class="fa-solid fa-arrow-right"></i>
         </button>
     </div>
+<div class="field">
+    <label for="langue_composition">Langue de composition <span>*</span></label>
 
+    <div class="input-icon">
+        <i class="fa-solid fa-language"></i>
+
+        <select name="langue_composition" id="langue_composition" required>
+            <option value="">Choisir une langue</option>
+
+            <option value="Français"
+                {{ old('langue_composition', $candidat->langue_composition ?? '') == 'Français' ? 'selected' : '' }}>
+                Français
+            </option>
+
+            <option value="Anglais"
+                {{ old('langue_composition', $candidat->langue_composition ?? '') == 'Anglais' ? 'selected' : '' }}>
+                Anglais
+            </option>
+        </select>
+    </div>
+</div>
 </div>
