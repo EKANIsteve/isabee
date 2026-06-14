@@ -1270,3 +1270,13 @@ img {
     background: var(--green);
     color: #ffffff;
 }
+.download-btn.disabled {
+    background: #e5e7eb;
+    color: #6b7280;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.download-btn.disabled:hover {
+    transform: none;
+}
