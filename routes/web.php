@@ -33,8 +33,14 @@ Route::prefix('concours')->name('concours.')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/inscription', [ConcoursController::class, 'inscription'])
-        ->name('inscription');
+    Route::prefix('concours')->name('concours.')->group(function () {
+
+    Route::get('/', [ConcoursController::class, 'inscription'])
+        ->name('index');
+
+    Route::get('/inscription', function () {
+        return redirect()->route('concours.index');
+    })->name('inscription');
 
     Route::get('/admission', [ConcoursController::class, 'admission'])
         ->name('admission');
@@ -48,7 +54,24 @@ Route::prefix('concours')->name('concours.')->group(function () {
     Route::get('/resultat', [ConcoursController::class, 'resultat'])
         ->name('resultat');
 
+    Route::post('/commencer', [ConcoursController::class, 'commencer'])
+        ->name('commencer');
 
+    Route::post('/modifier', [ConcoursController::class, 'modifier'])
+        ->name('modifier');
+
+    Route::post('/verifier', [ConcoursController::class, 'verifier'])
+        ->name('verifier');
+
+    Route::get('/formulaire', [ConcoursController::class, 'formulaire'])
+        ->name('formulaire');
+
+    Route::post('/store', [ConcoursController::class, 'store'])
+        ->name('store');
+
+    Route::put('/update/{id}', [ConcoursController::class, 'update'])
+        ->name('update');
+});
     /*
     |--------------------------------------------------------------------------
     | Confirmation du numéro de transaction
