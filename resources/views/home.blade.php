@@ -251,7 +251,7 @@
                 </div>
             </div>
 
-            <a href="{{ route('concours.inscription') }}" class="highlight-btn">
+            <a href="{{ route('concours.index') }}" class="highlight-btn">
                 Commencer l’inscription
             </a>
         </div>
@@ -394,7 +394,7 @@
                         <i class="fa-solid fa-circle-info"></i>
                     </div>
 
-                    <a href="{{ route('concours.inscription') }}">
+                    <a href="{{ route('concours.index') }}">
                         Concours ISABEE 2026 : les inscriptions en ligne sont ouvertes.
                     </a>
                 </div>
@@ -512,7 +512,7 @@
                     des frais de concours à la CCA Bank Cameroun.
                 </p>
 
-                <a href="{{ route('concours.inscription') }}">
+                <a href="{{ route('concours.index') }}">
                     Commencer l’inscription
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
