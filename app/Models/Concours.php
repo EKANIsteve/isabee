@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Concours extends Model
 {
@@ -49,9 +50,54 @@ class Concours extends Model
         'numero_diplome_entre',
         'sport_pratique',
         'handicape',
+        'type_handicap',
         'photo_etudiant',
         'document_scanner',
+        'candidate_edit_count',
+        'candidate_edited_at',
+        'admin_edited_by',
+        'admin_edited_at',
     ];
+
+    protected $casts = [
+        'date_naissance' => 'date',
+        'candidate_edited_at' => 'datetime',
+        'admin_edited_at' => 'datetime',
+    ];
+
+    public function getPhotoUrlAttribute(): string
+    {
+        if (!$this->photo_etudiant) {
+            return asset('images/default-user.png');
+        }
+
+        if (str_starts_with($this->photo_etudiant, 'http://') || str_starts_with($this->photo_etudiant, 'https://')) {
+            return $this->photo_etudiant;
+        }
+
+        if (str_starts_with($this->photo_etudiant, 'storage/')) {
+            return asset($this->photo_etudiant);
+        }
+
+        return Storage::disk('public')->url($this->photo_etudiant);
+    }
+
+    public function getDocumentUrlAttribute(): ?string
+    {
+        if (!$this->document_scanner) {
+            return null;
+        }
+
+        if (str_starts_with($this->document_scanner, 'http://') || str_starts_with($this->document_scanner, 'https://')) {
+            return $this->document_scanner;
+        }
+
+        if (str_starts_with($this->document_scanner, 'storage/')) {
+            return asset($this->document_scanner);
+        }
+
+        return Storage::disk('public')->url($this->document_scanner);
+    }
 
     public function cycle()
     {
@@ -86,5 +132,10 @@ class Concours extends Model
     public function arrondissement()
     {
         return $this->belongsTo(Arrondissement::class);
+    }
+
+    public function adminEditeur()
+    {
+        return $this->belongsTo(User::class, 'admin_edited_by');
     }
 }

@@ -163,18 +163,26 @@ Route::get('/dashboard', function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
 
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
 
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
+Route::middleware(['auth', 'role:super_admin,admin,scolarite,viewer'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/concours/{concours}', [AdminConcoursController::class, 'show'])
+            ->name('concours.show');
+    });
 
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
-});
+Route::middleware(['auth', 'role:super_admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/concours/{concours}/edit', [AdminConcoursController::class, 'edit'])
+            ->name('concours.edit');
 
+        Route::put('/concours/{concours}', [AdminConcoursController::class, 'update'])
+            ->name('concours.update');
+    });
 /*
 |--------------------------------------------------------------------------
 | Auth Breeze
