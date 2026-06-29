@@ -8,6 +8,7 @@ use App\Http\Controllers\ConcoursController;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AdminConcoursController;
 
 /*
 |--------------------------------------------------------------------------
@@ -137,6 +138,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
+    // CREER UN UTILISATEUR DEPUIS LE DASHBOARD
+    Route::post('/users/store', [DashboardController::class, 'storeUser'])
+        ->name('users.store');
+
+    // MODIFIER LE ROLE D'UN UTILISATEUR
     Route::put('/users/{user}/role', [DashboardController::class, 'updateRole'])
         ->name('users.role.update');
 
@@ -146,7 +152,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/imprimer-liste-centre-repartie', [DashboardController::class, 'imprimerListeCentreRepartie'])
         ->name('imprimer.liste.centre.repartie');
 });
-
 /*
 |--------------------------------------------------------------------------
 | Redirection après connexion Laravel Breeze
