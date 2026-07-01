@@ -2,11 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ConcoursController;
 use App\Http\Controllers\FormationController;
-use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminConcoursController;
 
@@ -16,7 +14,8 @@ use App\Http\Controllers\Admin\AdminConcoursController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
 
 /*
 |--------------------------------------------------------------------------
@@ -111,15 +110,6 @@ Route::get('/localisation/arrondissements/{departement}', [ConcoursController::c
 
 /*
 |--------------------------------------------------------------------------
-| Inscription simple
-|--------------------------------------------------------------------------
-*/
-
-Route::post('/inscription', [InscriptionController::class, 'store'])
-    ->name('inscription.submit');
-
-/*
-|--------------------------------------------------------------------------
 | Formation continue
 |--------------------------------------------------------------------------
 */
@@ -141,11 +131,35 @@ Route::middleware(['auth'])
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
+        /*
+        |--------------------------------------------------------------------------
+        | Exports candidats
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/export/candidats-excel', [DashboardController::class, 'exportCandidatsExcel'])
+            ->name('export.candidats.excel');
+
+        Route::get('/export/candidats-medias', [DashboardController::class, 'exportCandidatsMedias'])
+            ->name('export.candidats.medias');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Gestion utilisateurs
+        |--------------------------------------------------------------------------
+        */
+
         Route::post('/users/store', [DashboardController::class, 'storeUser'])
             ->name('users.store');
 
         Route::put('/users/{user}/role', [DashboardController::class, 'updateRole'])
             ->name('users.role.update');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Impression des listes
+        |--------------------------------------------------------------------------
+        */
 
         Route::get('/imprimer-liste-centre-cycle', [DashboardController::class, 'imprimerListeCentreCycle'])
             ->name('imprimer.liste.centre.cycle');
@@ -174,6 +188,7 @@ Route::middleware(['auth', 'role:super_admin,admin,scolarite,viewer'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+
         Route::get('/concours/{concours}', [AdminConcoursController::class, 'show'])
             ->name('concours.show');
     });
@@ -188,6 +203,7 @@ Route::middleware(['auth', 'role:super_admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+
         Route::get('/concours/{concours}/edit', [AdminConcoursController::class, 'edit'])
             ->name('concours.edit');
 
