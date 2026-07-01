@@ -350,31 +350,60 @@ class DashboardController extends Controller
     }
 
     public function imprimerListeCentreRepartie(Request $request)
-    {
-        $request->validate([
-            'centre_examen' => ['required', 'string', 'max:255'],
-        ]);
+{
+    $request->validate([
+        'centre_examen' => ['required', 'string', 'max:255'],
+    ]);
 
-        $centre = $request->centre_examen;
+    $centre = $request->centre_examen;
 
-        $candidats = Concours::with([
-            'cycle',
-            'filiere',
-            'specialite',
-            'pays',
-            'region',
-            'departement',
-            'arrondissement',
-        ])
-            ->where('centre_examen', $centre)
-            ->orderBy('cycle_id')
-            ->orderBy('filiere_id')
-            ->orderBy('specialite_id')
-            ->orderBy('nom_complet')
-            ->get();
+    $candidats = Concours::with([
+        'cycle',
+        'filiere',
+        'specialite',
+        'pays',
+        'region',
+        'departement',
+        'arrondissement',
+    ])
+        ->where('centre_examen', $centre)
+        ->orderBy('cycle_id')
+        ->orderBy('filiere_id')
+        ->orderBy('specialite_id')
+        ->orderBy('nom_complet')
+        ->get();
 
-        return view('admin.concours.print-centre-repartie', compact('candidats', 'centre'));
-    }
+    $groupedCandidats = $candidats
+        ->groupBy(function ($candidat) {
+            return $candidat->cycle?->nom_cycle ?? 'Cycle non défini';
+        })
+        ->map(function ($cycleItems) {
+            return $cycleItems
+                ->groupBy(function ($candidat) {
+                    return $candidat->filiere?->nom_filiere
+                        ?? $candidat->filiere?->nom
+                        ?? $candidat->filiere?->libelle
+                        ?? $candidat->filiere?->designation
+                        ?? 'Filière non définie';
+                })
+                ->map(function ($filiereItems) {
+                    return $filiereItems->groupBy(function ($candidat) {
+                        return $candidat->specialite?->nom_specialite
+                            ?? $candidat->specialite?->nom
+                            ?? $candidat->specialite?->libelle
+                            ?? $candidat->specialite?->designation
+                            ?? $candidat->specialite?->intitule
+                            ?? 'Spécialité non définie';
+                    });
+                });
+        });
+
+    return view('admin.concours.print-centre-repartie', compact(
+        'centre',
+        'candidats',
+        'groupedCandidats'
+    ));
+}
 
     private function candidatsQuery(Request $request)
     {

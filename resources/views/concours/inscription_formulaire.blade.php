@@ -58,6 +58,7 @@
 
                     <div>
                         <strong>Veuillez corriger les erreurs suivantes :</strong>
+
                         <ul style="margin-top:8px;">
                             @foreach($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -92,9 +93,11 @@
 
                 <div>
                     <strong>Numéro de transaction CCA Bank Cameroun</strong>
+
                     <p>
                         {{ old('numero_recu', $candidat->numero_recu ?? $numeroRecu ?? 'Non défini') }}
                     </p>
+
                     <small>
                         Ce numéro prouve le paiement. Il est unique pour chaque candidat.
                     </small>
@@ -149,15 +152,34 @@
                 @include('concours.steps.famille')
                 @include('concours.steps.diplome')
 
-
             </form>
 
         </div>
     </div>
 
 </section>
+
+@endsection
+
+@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Contrôle des numéros de reçu : uniquement 6 chiffres
+    |--------------------------------------------------------------------------
+    | Ce bloc agit sur les champs qui ont la classe .recu-6digits.
+    | Il sert surtout dans la page commencer / modifier / vérifier.
+    |--------------------------------------------------------------------------
+    */
+
+    document.querySelectorAll('.recu-6digits').forEach(function (input) {
+        input.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 6);
+        });
+    });
+
 
     /*
     |--------------------------------------------------------------------------
@@ -224,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const option = cycleSelect.options[cycleSelect.selectedIndex];
+
         return option ? option.dataset.cycleName || option.textContent : '';
     }
 
@@ -267,6 +290,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fillDiplomes();
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | Taille fichiers : maximum 1 Mo
@@ -274,7 +298,9 @@ document.addEventListener('DOMContentLoaded', function () {
     */
 
     function checkFileSize(input, message) {
-        if (!input) return;
+        if (!input) {
+            return;
+        }
 
         input.addEventListener('change', function () {
             const file = this.files[0];
@@ -296,9 +322,10 @@ document.addEventListener('DOMContentLoaded', function () {
         'Le reçu scanné ne doit pas dépasser 1 Mo.'
     );
 
+
     /*
     |--------------------------------------------------------------------------
-    | Empêcher Suivant si les champs obligatoires de l’étape ne sont pas remplis
+    | Validation des étapes avant bouton Suivant
     |--------------------------------------------------------------------------
     */
 
@@ -314,7 +341,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const fields = getStepFields(step);
 
         for (const field of fields) {
-            if (!isFieldUsable(field)) continue;
+            if (!isFieldUsable(field)) {
+                continue;
+            }
 
             if (field.hasAttribute('required') && !field.checkValidity()) {
                 return false;
@@ -327,7 +356,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateNextButton(step) {
         const nextButton = step.querySelector('.btn.next');
 
-        if (!nextButton) return;
+        if (!nextButton) {
+            return;
+        }
 
         nextButton.disabled = !validateStep(step);
     }
@@ -365,10 +396,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }, true);
     });
 
-});
 
-    
-document.addEventListener('DOMContentLoaded', function () {
+    /*
+    |--------------------------------------------------------------------------
+    | Localisation dynamique : pays, régions, départements, arrondissements
+    |--------------------------------------------------------------------------
+    */
+
     const paysSelect = document.getElementById('pays_select');
     const regionSelect = document.getElementById('region_select');
     const departementSelect = document.getElementById('departement_select');
@@ -408,7 +442,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function isCameroonSelected() {
         const option = paysSelect.options[paysSelect.selectedIndex];
+
         return option && option.dataset.cameroon === '1';
+    }
+
+    function refreshLocalisationStepButtons() {
+        const localisationStep = paysSelect.closest('.form-step');
+
+        if (localisationStep) {
+            updateNextButton(localisationStep);
+        }
     }
 
     function loadRegions(selectedRegion = null) {
@@ -416,6 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!paysId || !isCameroonSelected()) {
             disableLocalisation();
+            refreshLocalisationStepButtons();
             return;
         }
 
@@ -426,11 +470,13 @@ document.addEventListener('DOMContentLoaded', function () {
         resetSelect(arrondissementSelect, 'Sélectionner un arrondissement');
 
         fetch(`/localisation/regions/${paysId}`)
-            .then(response => response.json())
-            .then(data => {
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
                 resetSelect(regionSelect, 'Sélectionner une région');
 
-                data.forEach(region => {
+                data.forEach(function (region) {
                     const selected = selectedRegion == region.id ? 'selected' : '';
 
                     regionSelect.innerHTML += `
@@ -440,9 +486,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     `;
                 });
 
+                refreshLocalisationStepButtons();
+
                 if (selectedRegion) {
                     loadDepartements(departementSelect.dataset.selected);
                 }
+            })
+            .catch(function () {
+                resetSelect(regionSelect, 'Erreur de chargement');
+                refreshLocalisationStepButtons();
             });
     }
 
@@ -454,15 +506,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!regionId) {
             resetSelect(departementSelect, 'Sélectionner un département');
+            refreshLocalisationStepButtons();
             return;
         }
 
         fetch(`/localisation/departements/${regionId}`)
-            .then(response => response.json())
-            .then(data => {
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
                 resetSelect(departementSelect, 'Sélectionner un département');
 
-                data.forEach(departement => {
+                data.forEach(function (departement) {
                     const selected = selectedDepartement == departement.id ? 'selected' : '';
 
                     departementSelect.innerHTML += `
@@ -472,9 +527,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     `;
                 });
 
+                refreshLocalisationStepButtons();
+
                 if (selectedDepartement) {
                     loadArrondissements(arrondissementSelect.dataset.selected);
                 }
+            })
+            .catch(function () {
+                resetSelect(departementSelect, 'Erreur de chargement');
+                refreshLocalisationStepButtons();
             });
     }
 
@@ -485,15 +546,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!departementId) {
             resetSelect(arrondissementSelect, 'Sélectionner un arrondissement');
+            refreshLocalisationStepButtons();
             return;
         }
 
         fetch(`/localisation/arrondissements/${departementId}`)
-            .then(response => response.json())
-            .then(data => {
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
                 resetSelect(arrondissementSelect, 'Sélectionner un arrondissement');
 
-                data.forEach(arrondissement => {
+                data.forEach(function (arrondissement) {
                     const selected = selectedArrondissement == arrondissement.id ? 'selected' : '';
 
                     arrondissementSelect.innerHTML += `
@@ -502,6 +566,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         </option>
                     `;
                 });
+
+                refreshLocalisationStepButtons();
+            })
+            .catch(function () {
+                resetSelect(arrondissementSelect, 'Erreur de chargement');
+                refreshLocalisationStepButtons();
             });
     }
 
@@ -526,4 +596,4 @@ document.addEventListener('DOMContentLoaded', function () {
     loadRegions(regionSelect.dataset.selected);
 });
 </script>
-@endsection
+@endpush

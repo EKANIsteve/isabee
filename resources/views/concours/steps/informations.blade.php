@@ -7,7 +7,7 @@
 
         <div>
             <h3>Informations personnelles</h3>
-            <p>Renseignez les informations d’identification du candidat.</p>
+            <p>Renseignez les informations d’identification du candidat. Tous les champs sont obligatoires.</p>
         </div>
     </div>
 
@@ -49,13 +49,14 @@
         </div>
 
         <div class="field">
-            <label>Numéro CNI</label>
+            <label>Numéro CNI <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-id-card"></i>
                 <input type="text"
                        name="numero_nci"
                        value="{{ old('numero_nci', $candidat->numero_nci ?? '') }}"
-                       placeholder="Numéro de CNI">
+                       placeholder="Numéro de CNI"
+                       required>
             </div>
         </div>
 
@@ -96,32 +97,34 @@
         </div>
 
         <div class="field">
-            <label>Adresse e-mail</label>
+            <label>Adresse e-mail <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-envelope"></i>
                 <input type="email"
                        name="email"
                        value="{{ old('email', $candidat->email ?? '') }}"
-                       placeholder="exemple@email.com">
+                       placeholder="exemple@email.com"
+                       required>
             </div>
         </div>
 
         <div class="field">
-            <label>Nationalité</label>
+            <label>Nationalité <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-flag"></i>
                 <input type="text"
                        name="nationalite"
                        value="{{ old('nationalite', $candidat->nationalite ?? 'Camerounaise') }}"
-                       placeholder="Nationalité">
+                       placeholder="Nationalité"
+                       required>
             </div>
         </div>
 
         <div class="field">
-            <label>État civil</label>
+            <label>État civil <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-ring"></i>
-                <select name="marital">
+                <select name="marital" required>
                     <option value="">Choisir</option>
 
                     <option value="CELIBATAIRE"

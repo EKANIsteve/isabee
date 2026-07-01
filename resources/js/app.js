@@ -394,3 +394,10 @@ document.addEventListener('DOMContentLoaded', function () {
         footerObserver.observe(footer);
     }
 });
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.recu-6digits').forEach(function (input) {
+        input.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 6);
+        });
+    });
+});

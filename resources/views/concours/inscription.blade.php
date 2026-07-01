@@ -332,19 +332,30 @@
                         <i class="fa-solid fa-receipt"></i>
 
                         <input type="text"
-                               name="numero_recu"
-                               value="{{ old('numero_recu') }}"
-                               placeholder="Numéro de transaction CCA Bank"
-                               required>
+       name="numero_recu"
+       value="{{ old('numero_recu') }}"
+       placeholder="Ex : 123456"
+       class="recu-6digits"
+       inputmode="numeric"
+       pattern="[0-9]{6}"
+       minlength="6"
+       maxlength="6"
+       title="Le numéro de reçu doit contenir exactement 6 chiffres."
+       required>
                     </div>
 
                     <div class="mini-input-group">
                         <i class="fa-solid fa-check-double"></i>
-
-                        <input type="text"
-                               name="numero_recu_confirmation"
-                               placeholder="Confirmer le numéro de transaction"
-                               required>
+<input type="text"
+       name="numero_recu_confirmation"
+       placeholder="Confirmer le numéro de reçu"
+       class="recu-6digits"
+       inputmode="numeric"
+       pattern="[0-9]{6}"
+       minlength="6"
+       maxlength="6"
+       title="La confirmation doit contenir exactement 6 chiffres."
+       required>
                     </div>
 
                     <button type="submit">

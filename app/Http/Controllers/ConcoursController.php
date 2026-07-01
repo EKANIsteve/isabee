@@ -20,6 +20,10 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Milon\Barcode\DNS1D;
 use Milon\Barcode\DNS2D;
 use Illuminate\Support\Facades\File;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 
 
@@ -739,6 +743,102 @@ public function getArrondissements($departementId)
             ->orderBy('nom_arrondissement')
             ->get(['id', 'nom_arrondissement'])
     );
+}
+
+private function concoursValidationRules(?int $ignoreId = null, bool $isUpdate = false): array
+{
+    return [
+        'numero_recu' => [
+            'required',
+            'regex:/^[0-9]{6}$/',
+            Rule::unique('concours', 'numero_recu')->ignore($ignoreId),
+        ],
+
+        'cycle_id' => ['required', 'exists:cycles,id'],
+        'filiere_id' => ['required', 'exists:filieres,id'],
+        'specialite_id' => ['required', 'exists:specialites,id'],
+        'centre_examen' => ['required', 'string', 'max:255'],
+        'langue_composition' => ['required', 'string', 'max:255'],
+
+        'nom_complet' => ['required', 'string', 'max:255'],
+        'date_naissance' => ['required', 'date'],
+        'lieu_naissance' => ['required', 'string', 'max:255'],
+        'numero_nci' => ['required', 'string', 'max:255'],
+        'sexe' => ['required', 'string', 'max:50'],
+        'numero_telephone_candidat' => ['required', 'regex:/^[0-9]{9}$/'],
+        'telephone' => ['nullable', 'string', 'max:50'],
+        'email' => ['required', 'email', 'max:255'],
+        'nationalite' => ['required', 'string', 'max:255'],
+        'marital' => ['required', 'string', 'max:255'],
+        'profession' => ['required', 'string', 'max:255'],
+
+        'pays_id' => ['required', 'exists:pays,id'],
+        'region_id' => ['required', 'exists:regions,id'],
+        'departement_id' => ['required', 'exists:departements,id'],
+        'arrondissement_id' => ['required', 'exists:arrondissements,id'],
+
+        'nom_pere' => ['required', 'string', 'max:255'],
+        'numero_telephone_pere' => ['required', 'regex:/^[0-9]{9}$/'],
+        'profession_pere' => ['required', 'string', 'max:255'],
+
+        'nom_mere' => ['required', 'string', 'max:255'],
+        'numero_telephone_mere' => ['required', 'regex:/^[0-9]{9}$/'],
+        'profession_mere' => ['required', 'string', 'max:255'],
+
+        'ville_parents' => ['required', 'string', 'max:255'],
+
+        'Personne_a_contacter_cas_urgent' => ['required', 'string', 'max:255'],
+        'numero_telephone_Personne_a_contacte_urgent' => ['required', 'regex:/^[0-9]{9}$/'],
+        'ville_Personne_a_contacte_cas_urgent' => ['required', 'string', 'max:255'],
+
+        'diplome_entre' => ['required', 'string', 'max:255'],
+        'serie_diplome' => ['required', 'string', 'max:255'],
+        'annee_obtention_diplome' => ['required', 'integer', 'min:1990', 'max:2100'],
+        'emetteur_entre_diplome' => ['required', 'string', 'max:255'],
+        'moyenne_obtenu_diplome' => ['required', 'string', 'max:255'],
+        'numero_diplome_entre' => ['required', 'string', 'max:255'],
+
+        'sport_pratique' => ['required', 'string', 'max:255'],
+        'handicape' => ['required', 'in:Oui,Non'],
+        'type_handicap' => ['nullable', 'string', 'max:255'],
+
+        'photo_etudiant' => [
+            $isUpdate ? 'nullable' : 'required',
+            'image',
+            'mimes:jpg,jpeg,png',
+            'max:1024',
+        ],
+
+        'document_scanner' => [
+            $isUpdate ? 'nullable' : 'required',
+            'image',
+            'mimes:jpg,jpeg,png',
+            'max:1024',
+        ],
+    ];
+}
+private function concoursValidationMessages(): array
+{
+    return [
+        'numero_recu.required' => 'Le numéro de reçu est obligatoire.',
+        'numero_recu.regex' => 'Le numéro de reçu doit contenir exactement 6 chiffres.',
+        'numero_recu.unique' => 'Ce numéro de reçu a déjà été utilisé pour une autre inscription.',
+
+        'numero_telephone_candidat.regex' => 'Le téléphone du candidat doit contenir exactement 9 chiffres.',
+        'numero_telephone_pere.regex' => 'Le téléphone du père doit contenir exactement 9 chiffres.',
+        'numero_telephone_mere.regex' => 'Le téléphone de la mère doit contenir exactement 9 chiffres.',
+        'numero_telephone_Personne_a_contacte_urgent.regex' => 'Le téléphone de la personne à contacter doit contenir exactement 9 chiffres.',
+
+        'photo_etudiant.required' => 'La photo du candidat est obligatoire.',
+        'photo_etudiant.image' => 'La photo doit être une image valide.',
+        'photo_etudiant.max' => 'La photo ne doit pas dépasser 1 Mo.',
+
+        'document_scanner.required' => 'Le reçu scanné est obligatoire.',
+        'document_scanner.image' => 'Le reçu scanné doit être une image valide.',
+        'document_scanner.max' => 'Le reçu scanné ne doit pas dépasser 1 Mo.',
+
+        '*.required' => 'Tous les champs obligatoires doivent être renseignés.',
+    ];
 }
 
 }

@@ -7,10 +7,7 @@
 
         <div>
             <h3>Localisation du candidat</h3>
-            <p>
-                Sélectionnez le pays. Si le pays est Cameroon, les régions, départements
-                et arrondissements seront chargés automatiquement.
-            </p>
+            <p>Sélectionnez le pays, la région, le département et l’arrondissement. Tous les champs sont obligatoires.</p>
         </div>
     </div>
 
@@ -37,42 +34,45 @@
         </div>
 
         <div class="field">
-            <label for="region_select">Région</label>
+            <label for="region_select">Région <span>*</span></label>
 
             <div class="input-icon">
                 <i class="fa-solid fa-map-location-dot"></i>
 
                 <select name="region_id"
                         id="region_select"
-                        data-selected="{{ old('region_id', $candidat->region_id ?? '') }}">
+                        data-selected="{{ old('region_id', $candidat->region_id ?? '') }}"
+                        required>
                     <option value="">Sélectionner une région</option>
                 </select>
             </div>
         </div>
 
         <div class="field">
-            <label for="departement_select">Département</label>
+            <label for="departement_select">Département <span>*</span></label>
 
             <div class="input-icon">
                 <i class="fa-solid fa-map"></i>
 
                 <select name="departement_id"
                         id="departement_select"
-                        data-selected="{{ old('departement_id', $candidat->departement_id ?? '') }}">
+                        data-selected="{{ old('departement_id', $candidat->departement_id ?? '') }}"
+                        required>
                     <option value="">Sélectionner un département</option>
                 </select>
             </div>
         </div>
 
         <div class="field">
-            <label for="arrondissement_select">Arrondissement</label>
+            <label for="arrondissement_select">Arrondissement <span>*</span></label>
 
             <div class="input-icon">
                 <i class="fa-solid fa-location-crosshairs"></i>
 
                 <select name="arrondissement_id"
                         id="arrondissement_select"
-                        data-selected="{{ old('arrondissement_id', $candidat->arrondissement_id ?? '') }}">
+                        data-selected="{{ old('arrondissement_id', $candidat->arrondissement_id ?? '') }}"
+                        required>
                     <option value="">Sélectionner un arrondissement</option>
                 </select>
             </div>

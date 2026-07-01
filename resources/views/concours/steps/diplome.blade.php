@@ -7,7 +7,7 @@
 
         <div>
             <h3>Diplôme et pièces jointes</h3>
-            <p>Renseignez les informations relatives au diplôme, au sport et aux fichiers.</p>
+            <p>Renseignez les informations relatives au diplôme, au sport et aux fichiers. Tous les champs sont obligatoires.</p>
         </div>
     </div>
 
@@ -75,24 +75,26 @@
         </div>
 
         <div class="field">
-            <label>Moyenne obtenue</label>
+            <label>Moyenne obtenue <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-percent"></i>
                 <input type="text"
                        name="moyenne_obtenu_diplome"
                        value="{{ old('moyenne_obtenu_diplome', $candidat->moyenne_obtenu_diplome ?? '') }}"
-                       placeholder="Ex : 12.50">
+                       placeholder="Ex : 12.50"
+                       required>
             </div>
         </div>
 
         <div class="field">
-            <label>Numéro du diplôme</label>
+            <label>Numéro du diplôme <span>*</span></label>
             <div class="input-icon">
                 <i class="fa-solid fa-hashtag"></i>
                 <input type="text"
                        name="numero_diplome_entre"
                        value="{{ old('numero_diplome_entre', $candidat->numero_diplome_entre ?? '') }}"
-                       placeholder="Numéro du diplôme">
+                       placeholder="Numéro du diplôme"
+                       required>
             </div>
         </div>
 
@@ -103,7 +105,7 @@
         Autres informations
     </div>
 
-    <div class="grid grid-2">
+    <div class="grid grid-3">
 
         <div class="field">
             <label>Sport pratiqué <span>*</span></label>
@@ -148,6 +150,18 @@
             </div>
         </div>
 
+        <div class="field">
+            <label>Type de handicap / précision <span>*</span></label>
+            <div class="input-icon">
+                <i class="fa-solid fa-notes-medical"></i>
+                <input type="text"
+                       name="type_handicap"
+                       value="{{ old('type_handicap', $candidat->type_handicap ?? '') }}"
+                       placeholder="Écrire Aucun si non concerné"
+                       required>
+            </div>
+        </div>
+
     </div>
 
     <div class="subsection-title">
@@ -158,7 +172,7 @@
     <div class="grid grid-2">
 
         <div class="field file-field">
-            <label>Photo du candidat</label>
+            <label>Photo du candidat <span>*</span></label>
 
             <div class="input-icon file-input-icon">
                 <i class="fa-solid fa-image"></i>
@@ -166,18 +180,23 @@
                 <input type="file"
                        name="photo_etudiant"
                        id="photo_etudiant"
-                       accept="image/png,image/jpeg,image/jpg">
+                       accept="image/png,image/jpeg,image/jpg"
+                       @if(!isset($candidat) || !$candidat->photo_etudiant) required @endif>
             </div>
 
             @if(isset($candidat) && $candidat->photo_etudiant)
-                <small>Photo actuelle : <strong>{{ $candidat->photo_etudiant }}</strong></small>
+                <small>
+                    Photo actuelle :
+                    <strong>{{ $candidat->photo_etudiant }}</strong>.
+                    Laissez vide si vous ne voulez pas la remplacer.
+                </small>
             @else
                 <small>Formats acceptés : JPG, JPEG, PNG. Taille maximale : 1 Mo.</small>
             @endif
         </div>
 
         <div class="field file-field">
-            <label>Reçu scanné</label>
+            <label>Reçu scanné <span>*</span></label>
 
             <div class="input-icon file-input-icon">
                 <i class="fa-solid fa-receipt"></i>
@@ -185,11 +204,16 @@
                 <input type="file"
                        name="document_scanner"
                        id="document_scanner"
-                       accept="image/png,image/jpeg,image/jpg">
+                       accept="image/png,image/jpeg,image/jpg"
+                       @if(!isset($candidat) || !$candidat->document_scanner) required @endif>
             </div>
 
             @if(isset($candidat) && $candidat->document_scanner)
-                <small>Reçu actuel : <strong>{{ $candidat->document_scanner }}</strong></small>
+                <small>
+                    Reçu actuel :
+                    <strong>{{ $candidat->document_scanner }}</strong>.
+                    Laissez vide si vous ne voulez pas le remplacer.
+                </small>
             @else
                 <small>Le reçu doit être clair et lisible. Formats acceptés : JPG, JPEG, PNG. Taille maximale : 1 Mo.</small>
             @endif
