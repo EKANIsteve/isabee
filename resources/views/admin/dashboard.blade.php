@@ -328,6 +328,115 @@
     .pagination-wrap {
         margin-top: 20px;
     }
+    .stats-by-cycle-card {
+    grid-column: 1 / -1;
+}
+
+.cycle-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.cycle-stat-block {
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #f8fafc;
+}
+
+.cycle-stat-header {
+    background: linear-gradient(135deg, #063f2b, #0b7a4b);
+    color: white;
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+}
+
+.cycle-stat-header span {
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.cycle-stat-header strong {
+    background: #f4c430;
+    color: #063f2b;
+    padding: 6px 11px;
+    border-radius: 999px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.cycle-stat-body {
+    padding: 14px;
+}
+
+.cycle-specialite-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+}
+
+.cycle-specialite-row:last-child {
+    border-bottom: none;
+}
+
+.cycle-specialite-row span {
+    font-weight: 700;
+}
+
+.cycle-specialite-row strong {
+    color: #0b7a4b;
+    font-weight: 900;
+}
+
+.export-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.btn-export-excel {
+    background: #15803d;
+}
+
+.btn-export-zip {
+    background: #7c3aed;
+}
+
+.btn-export-excel,
+.btn-export-zip {
+    height: 44px;
+    border: none;
+    border-radius: 13px;
+    padding: 0 16px;
+    color: white !important;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none !important;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+}
+
+.btn-export-excel:hover,
+.btn-export-zip:hover {
+    transform: translateY(-2px);
+}
+
+@media(max-width: 900px) {
+    .cycle-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
     @media(max-width: 1100px) {
         .stats-grid {
@@ -467,35 +576,59 @@
 
         <div class="dashboard-grid">
 
-            <div class="dashboard-card">
-                <h3>
-                    <i class="fa-solid fa-graduation-cap"></i>
-                    Statistiques par spécialité
-                </h3>
+            <div class="dashboard-card stats-by-cycle-card">
+    <h3>
+        <i class="fa-solid fa-layer-group"></i>
+        Statistiques par cycle et par spécialité
+    </h3>
 
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Spécialité</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
+    <div class="cycle-stats-grid">
+        @forelse($statsSpecialitesParCycle as $cycleStat)
+            <div class="cycle-stat-block">
+                <div class="cycle-stat-header">
+                    <span>
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        {{ $cycleStat->cycle }}
+                    </span>
 
-                    <tbody>
-                        @forelse($statsSpecialites as $item)
-                            <tr>
-                                <td>{{ $item->label ?? 'Non défini' }}</td>
-                                <td>{{ $item->total }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="2">Aucune donnée disponible.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                    <strong>{{ $cycleStat->total }} candidat(s)</strong>
+                </div>
+
+                <div class="cycle-stat-body">
+                    @forelse($cycleStat->specialites as $specialite)
+                        <div class="cycle-specialite-row">
+                            <span>{{ $specialite->label ?? 'Non défini' }}</span>
+                            <strong>{{ $specialite->total }}</strong>
+                        </div>
+                    @empty
+                        <div class="cycle-specialite-row">
+                            <span>Aucune spécialité</span>
+                            <strong>0</strong>
+                        </div>
+                    @endforelse
+                </div>
             </div>
+        @empty
+            <div class="cycle-stat-block">
+                <div class="cycle-stat-header">
+                    <span>
+                        <i class="fa-solid fa-circle-info"></i>
+                        Aucune donnée disponible
+                    </span>
 
+                    <strong>0</strong>
+                </div>
+
+                <div class="cycle-stat-body">
+                    <div class="cycle-specialite-row">
+                        <span>Aucune inscription pour le moment.</span>
+                        <strong>0</strong>
+                    </div>
+                </div>
+            </div>
+        @endforelse
+    </div>
+</div>
             <div class="dashboard-card">
                 <h3>
                     <i class="fa-solid fa-venus-mars"></i>
@@ -673,7 +806,19 @@
                 <i class="fa-solid fa-list"></i>
                 Liste complète des candidats inscrits
             </h3>
+            <div class="export-toolbar">
+    <a href="{{ route('admin.export.candidats.excel', request()->query()) }}"
+       class="btn-export-excel">
+        <i class="fa-solid fa-file-excel"></i>
+        Exporter Excel
+    </a>
 
+    <a href="{{ route('admin.export.candidats.medias', request()->query()) }}"
+       class="btn-export-zip">
+        <i class="fa-solid fa-file-zipper"></i>
+        Exporter photos + reçus scannés
+    </a>
+</div>
             <div class="table-responsive">
                 <table class="admin-table candidates-table">
                     <thead>
