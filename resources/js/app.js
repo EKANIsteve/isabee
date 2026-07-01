@@ -359,3 +359,38 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+/* =====================================================
+   HEADER + FOOTER PREMIUM ANIMATIONS
+===================================================== */
+
+document.addEventListener('DOMContentLoaded', function () {
+    const header = document.querySelector('.main-header');
+    const footer = document.getElementById('footerPro');
+
+    function updateHeaderState() {
+        if (!header) return;
+
+        if (window.scrollY > 40) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    }
+
+    updateHeaderState();
+    window.addEventListener('scroll', updateHeaderState);
+
+    if (footer) {
+        const footerObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    footer.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.18
+        });
+
+        footerObserver.observe(footer);
+    }
+});

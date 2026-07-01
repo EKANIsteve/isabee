@@ -151,7 +151,8 @@
 </main>
 
 {{-- FOOTER --}}
-<footer class="footer-pro">
+{{-- FOOTER --}}
+<footer class="footer-pro" id="footerPro">
 
     <div class="footer-wave">
         <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
@@ -159,9 +160,18 @@
         </svg>
     </div>
 
+    <div class="footer-animated-bg">
+        <span class="footer-orb orb-1"></span>
+        <span class="footer-orb orb-2"></span>
+        <span class="footer-orb orb-3"></span>
+        <i class="fa-solid fa-leaf footer-floating-icon icon-1"></i>
+        <i class="fa-solid fa-water footer-floating-icon icon-2"></i>
+        <i class="fa-solid fa-seedling footer-floating-icon icon-3"></i>
+    </div>
+
     <div class="container footer-main">
 
-        <div class="footer-brand">
+        <div class="footer-brand footer-animate">
             <div class="footer-logo-box">
                 <img src="{{ asset('images/logo.jpg') }}" alt="Logo ISABEE">
 
@@ -173,43 +183,112 @@
 
             <p>
                 Institut Supérieur d’Agriculture, du Bois, de l’Eau et de l’Environnement.
-                Un pôle polytechnique d’excellence dédié à la formation, la recherche
-                et au développement durable.
+                Un pôle polytechnique d’excellence dédié à la formation, la recherche,
+                l’innovation et au développement durable.
             </p>
 
             <div class="footer-socials">
-                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" aria-label="Facebook">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+
+                <a href="#" aria-label="X">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+
+                <a href="#" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+
+                <a href="#" aria-label="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
             </div>
         </div>
 
-        <div class="footer-column">
+        <div class="footer-column footer-animate">
             <h4>Liens rapides</h4>
 
             <ul>
-                <li><a href="{{ url('/') }}"><i class="fa-solid fa-angle-right"></i> Accueil</a></li>
-                <li><a href="#"><i class="fa-solid fa-angle-right"></i> Formations</a></li>
-                <li><a href="#"><i class="fa-solid fa-angle-right"></i> Départements</a></li>
-                <li><a href="{{ route('concours.inscription') }}"><i class="fa-solid fa-angle-right"></i> Concours</a></li>
-                <li><a href="#"><i class="fa-solid fa-angle-right"></i> Contact</a></li>
+                <li>
+                    <a href="{{ url('/') }}">
+                        <i class="fa-solid fa-angle-right"></i>
+                        Accueil
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#formations-isabee">
+                        <i class="fa-solid fa-angle-right"></i>
+                        Formations
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#documents-isabee">
+                        <i class="fa-solid fa-angle-right"></i>
+                        Documents officiels
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('concours.inscription') }}">
+                        <i class="fa-solid fa-angle-right"></i>
+                        Inscription concours
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#presentation-isabee">
+                        <i class="fa-solid fa-angle-right"></i>
+                        Présentation
+                    </a>
+                </li>
             </ul>
         </div>
 
-        <div class="footer-column">
+        <div class="footer-column footer-animate">
             <h4>Formations</h4>
 
             <ul>
-                <li><a href="#"><i class="fa-solid fa-angle-right"></i> Agriculture</a></li>
-                <li><a href="#"><i class="fa-solid fa-angle-right"></i> Sciences du bois</a></li>
-                <li><a href="#"><i class="fa-solid fa-angle-right"></i> Gestion de l’eau</a></li>
-                <li><a href="#"><i class="fa-solid fa-angle-right"></i> Environnement</a></li>
-                <li><a href="#"><i class="fa-solid fa-angle-right"></i> Génie Civil</a></li>
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-angle-right"></i>
+                        Agriculture & Élevage
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-angle-right"></i>
+                        Sciences du bois
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-angle-right"></i>
+                        Gestion de l’eau
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-angle-right"></i>
+                        Environnement
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-angle-right"></i>
+                        Génie Civil & Habitat
+                    </a>
+                </li>
             </ul>
         </div>
 
-        <div class="footer-contact">
+        <div class="footer-contact footer-animate">
             <h4>Contact</h4>
 
             <div class="contact-item">
@@ -238,13 +317,24 @@
                     <span>+237 694 193 607 / 677 079 747</span>
                 </div>
             </div>
+
+            <div class="footer-cta-box">
+                <span>Admissions 2026–2027</span>
+
+                <a href="{{ route('concours.inscription') }}">
+                    Postuler maintenant
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
         </div>
 
     </div>
 
     <div class="footer-bottom-pro">
         <div class="container footer-bottom-inner">
-            <p>© {{ date('Y') }} ISABEE Ebolowa - Tous droits réservés.</p>
+            <p>
+                © {{ date('Y') }} ISABEE Ebolowa - Tous droits réservés.
+            </p>
 
             <div>
                 <a href="#">Politique de confidentialité</a>
@@ -254,7 +344,7 @@
         </div>
     </div>
 
-    <button id="backToTop" class="back-to-top" type="button">
+    <button id="backToTop" class="back-to-top" type="button" aria-label="Retour en haut">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
