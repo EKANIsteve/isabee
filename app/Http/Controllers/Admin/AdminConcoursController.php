@@ -6,18 +6,38 @@ use App\Http\Controllers\Controller;
 use App\Models\Concours;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AdminConcoursController extends Controller
 {
     public function show(Concours $concours)
     {
-        $concours->load(['cycle', 'filiere', 'specialite', 'pays', 'region', 'departement', 'arrondissement']);
+        $concours->load([
+            'cycle',
+            'filiere',
+            'specialite',
+            'pays',
+            'region',
+            'departement',
+            'arrondissement',
+            'adminEditeur',
+        ]);
 
         return view('admin.concours.show', compact('concours'));
     }
 
     public function edit(Concours $concours)
     {
+        $concours->load([
+            'cycle',
+            'filiere',
+            'specialite',
+            'pays',
+            'region',
+            'departement',
+            'arrondissement',
+        ]);
+
         return view('admin.concours.edit', compact('concours'));
     }
 
@@ -42,18 +62,14 @@ class AdminConcoursController extends Controller
         ]);
 
         if ($request->hasFile('photo_etudiant')) {
-            if ($concours->photo_etudiant && !str_starts_with($concours->photo_etudiant, 'http')) {
-                Storage::disk('public')->delete($concours->photo_etudiant);
-            }
+            $this->deletePublicFile($concours->photo_etudiant);
 
             $data['photo_etudiant'] = $request->file('photo_etudiant')
                 ->store('concours/photos', 'public');
         }
 
         if ($request->hasFile('document_scanner')) {
-            if ($concours->document_scanner && !str_starts_with($concours->document_scanner, 'http')) {
-                Storage::disk('public')->delete($concours->document_scanner);
-            }
+            $this->deletePublicFile($concours->document_scanner);
 
             $data['document_scanner'] = $request->file('document_scanner')
                 ->store('concours/documents', 'public');
@@ -62,11 +78,39 @@ class AdminConcoursController extends Controller
         $data['admin_edited_by'] = auth()->id();
         $data['admin_edited_at'] = now();
 
-        // L'admin peut modifier plusieurs fois : aucun blocage ici.
         $concours->update($data);
 
         return redirect()
             ->route('admin.dashboard')
             ->with('success', 'Inscription modifiée avec succès.');
+    }
+
+    public function destroy(Concours $concours)
+    {
+        $this->deletePublicFile($concours->photo_etudiant);
+        $this->deletePublicFile($concours->document_scanner);
+
+        $concours->delete();
+
+        return redirect()
+            ->route('admin.dashboard')
+            ->with('success', 'Candidat supprimé avec succès.');
+    }
+
+    private function deletePublicFile(?string $path): void
+    {
+        if (!$path) {
+            return;
+        }
+
+        if (Str::startsWith($path, ['http://', 'https://'])) {
+            return;
+        }
+
+        $path = Str::replaceFirst('storage/', '', $path);
+
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
     }
 }

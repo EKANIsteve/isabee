@@ -59,25 +59,12 @@ class User extends Authenticatable
     /**
      * Vérifie si l'utilisateur est Admin ou Super Admin.
      */
-    public function isAdmin(): bool
-    {
-        return in_array($this->role, [
-            'super_admin',
-            'admin',
-        ]);
-    }
+   
 
     /**
      * Vérifie si l'utilisateur appartient à la scolarité.
      */
-    public function isScolarite(): bool
-    {
-        return in_array($this->role, [
-            'super_admin',
-            'admin',
-            'scolarite',
-        ]);
-    }
+ 
 
     /**
      * Vérifie si l'utilisateur peut seulement consulter.
@@ -86,4 +73,17 @@ class User extends Authenticatable
     {
         return $this->role === 'viewer';
     }
+
+
+public function isAdmin(): bool
+{
+    return in_array($this->role, ['super_admin', 'admin'], true);
+}
+
+public function isScolarite(): bool
+{
+    return $this->role === 'scolarite';
+}
+
+
 }

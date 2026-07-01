@@ -239,6 +239,7 @@
         justify-content: center;
         gap: 7px;
         text-decoration: none !important;
+        font-size: 13px;
     }
 
     .filter-form a {
@@ -251,6 +252,21 @@
 
     .btn-doc {
         background: #7c3aed;
+    }
+
+    .btn-delete {
+        background: #dc2626;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .action-buttons form {
+        margin: 0;
     }
 
     .badge {
@@ -401,7 +417,6 @@
             </div>
         @endif
 
-        {{-- STATS --}}
         <div class="stats-grid">
 
             <div class="stat-card">
@@ -450,7 +465,6 @@
 
         </div>
 
-        {{-- STATS TABLES --}}
         <div class="dashboard-grid">
 
             <div class="dashboard-card">
@@ -571,7 +585,6 @@
 
         </div>
 
-        {{-- IMPRESSION --}}
         <div class="dashboard-card print-list-card">
             <h3>
                 <i class="fa-solid fa-print"></i>
@@ -609,7 +622,6 @@
             </form>
         </div>
 
-        {{-- FILTRES CANDIDATS --}}
         <div class="dashboard-card">
             <h3>
                 <i class="fa-solid fa-filter"></i>
@@ -656,7 +668,6 @@
             </form>
         </div>
 
-        {{-- LISTE COMPLETE DES CANDIDATS --}}
         <div class="dashboard-card candidates-list-card">
             <h3>
                 <i class="fa-solid fa-list"></i>
@@ -688,32 +699,8 @@
                     <tbody>
                         @forelse($candidats as $candidat)
                             @php
-                                $photo = $candidat->photo_etudiant;
-                                $document = $candidat->document_scanner;
-
-                                if ($photo) {
-                                    if (\Illuminate\Support\Str::startsWith($photo, ['http://', 'https://'])) {
-                                        $photoUrl = $photo;
-                                    } elseif (\Illuminate\Support\Str::startsWith($photo, 'storage/')) {
-                                        $photoUrl = asset($photo);
-                                    } else {
-                                        $photoUrl = asset('storage/' . $photo);
-                                    }
-                                } else {
-                                    $photoUrl = asset('images/default-user.png');
-                                }
-
-                                if ($document) {
-                                    if (\Illuminate\Support\Str::startsWith($document, ['http://', 'https://'])) {
-                                        $documentUrl = $document;
-                                    } elseif (\Illuminate\Support\Str::startsWith($document, 'storage/')) {
-                                        $documentUrl = asset($document);
-                                    } else {
-                                        $documentUrl = asset('storage/' . $document);
-                                    }
-                                } else {
-                                    $documentUrl = null;
-                                }
+                                $photoUrl = $candidat->photo_url;
+                                $documentUrl = $candidat->document_url;
 
                                 $handicapeValue = strtolower((string) $candidat->handicape);
                                 $isHandicape = in_array($handicapeValue, ['oui', 'yes', '1', 'true']);
@@ -723,7 +710,8 @@
                                 <td>
                                     <img src="{{ $photoUrl }}"
                                          alt="Photo candidat"
-                                         class="candidate-photo">
+                                         class="candidate-photo"
+                                         onerror="this.onerror=null;this.src='{{ asset('images/default-user.png') }}';">
                                 </td>
 
                                 <td>{{ $candidat->numero_recu ?? '---' }}</td>
@@ -734,25 +722,22 @@
                                 <td>{{ $candidat->email ?? '---' }}</td>
                                 <td>{{ $candidat->centre_examen ?? '---' }}</td>
 
+                                <td>{{ $candidat->cycle?->nom_cycle ?? '---' }}</td>
+
                                 <td>
-                                    {{ optional($candidat->cycle)->nom
-                                        ?? optional($candidat->cycle)->libelle
-                                        ?? optional($candidat->cycle)->designation
+                                    {{ $candidat->filiere?->nom_filiere
+                                        ?? $candidat->filiere?->nom
+                                        ?? $candidat->filiere?->libelle
+                                        ?? $candidat->filiere?->designation
                                         ?? '---' }}
                                 </td>
 
                                 <td>
-                                    {{ optional($candidat->filiere)->nom
-                                        ?? optional($candidat->filiere)->libelle
-                                        ?? optional($candidat->filiere)->designation
-                                        ?? '---' }}
-                                </td>
-
-                                <td>
-                                    {{ optional($candidat->specialite)->nom
-                                        ?? optional($candidat->specialite)->libelle
-                                        ?? optional($candidat->specialite)->designation
-                                        ?? optional($candidat->specialite)->intitule
+                                    {{ $candidat->specialite?->nom_specialite
+                                        ?? $candidat->specialite?->nom
+                                        ?? $candidat->specialite?->libelle
+                                        ?? $candidat->specialite?->designation
+                                        ?? $candidat->specialite?->intitule
                                         ?? '---' }}
                                 </td>
 
@@ -777,17 +762,32 @@
                                 </td>
 
                                 <td>
-                                    @if(Route::has('admin.concours.show'))
-                                        <a href="{{ route('admin.concours.show', $candidat->id) }}" class="btn-mini">
-                                            Voir
-                                        </a>
-                                    @endif
+                                    <div class="action-buttons">
+                                        @if(Route::has('admin.concours.show'))
+                                            <a href="{{ route('admin.concours.show', $candidat->id) }}" class="btn-mini">
+                                                Voir
+                                            </a>
+                                        @endif
 
-                                    @if(auth()->user()->isAdmin() && Route::has('admin.concours.edit'))
-                                        <a href="{{ route('admin.concours.edit', $candidat->id) }}" class="btn-mini btn-edit">
-                                            Modifier
-                                        </a>
-                                    @endif
+                                        @if(auth()->user()->isSuperAdmin() && Route::has('admin.concours.edit'))
+                                            <a href="{{ route('admin.concours.edit', $candidat->id) }}" class="btn-mini btn-edit">
+                                                Modifier
+                                            </a>
+                                        @endif
+
+                                        @if(auth()->user()->isSuperAdmin() && Route::has('admin.concours.destroy'))
+                                            <form action="{{ route('admin.concours.destroy', $candidat->id) }}"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Voulez-vous vraiment supprimer ce candidat ? Cette action est définitive.');">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit" class="btn-mini btn-delete">
+                                                    Supprimer
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -804,7 +804,6 @@
             </div>
         </div>
 
-        {{-- CREATION UTILISATEUR --}}
         @if(auth()->user()->isSuperAdmin())
             <div class="dashboard-card">
                 <h3>
@@ -835,7 +834,6 @@
             </div>
         @endif
 
-        {{-- ATTRIBUTION DES ROLES --}}
         @if(auth()->user()->isSuperAdmin())
             <div class="dashboard-card role-card">
                 <h3>

@@ -129,29 +129,31 @@ Route::get('/formation-continue', [FormationController::class, 'index'])
 
 /*
 |--------------------------------------------------------------------------
-| Administration
+| Administration principale
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
 
-    // CREER UN UTILISATEUR DEPUIS LE DASHBOARD
-    Route::post('/users/store', [DashboardController::class, 'storeUser'])
-        ->name('users.store');
+        Route::post('/users/store', [DashboardController::class, 'storeUser'])
+            ->name('users.store');
 
-    // MODIFIER LE ROLE D'UN UTILISATEUR
-    Route::put('/users/{user}/role', [DashboardController::class, 'updateRole'])
-        ->name('users.role.update');
+        Route::put('/users/{user}/role', [DashboardController::class, 'updateRole'])
+            ->name('users.role.update');
 
-    Route::get('/imprimer-liste-centre-cycle', [DashboardController::class, 'imprimerListeCentreCycle'])
-        ->name('imprimer.liste.centre.cycle');
+        Route::get('/imprimer-liste-centre-cycle', [DashboardController::class, 'imprimerListeCentreCycle'])
+            ->name('imprimer.liste.centre.cycle');
 
-    Route::get('/imprimer-liste-centre-repartie', [DashboardController::class, 'imprimerListeCentreRepartie'])
-        ->name('imprimer.liste.centre.repartie');
-});
+        Route::get('/imprimer-liste-centre-repartie', [DashboardController::class, 'imprimerListeCentreRepartie'])
+            ->name('imprimer.liste.centre.repartie');
+    });
+
 /*
 |--------------------------------------------------------------------------
 | Redirection après connexion Laravel Breeze
@@ -164,11 +166,9 @@ Route::get('/dashboard', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Profil utilisateur
+| Administration concours : voir
 |--------------------------------------------------------------------------
 */
-
-
 
 Route::middleware(['auth', 'role:super_admin,admin,scolarite,viewer'])
     ->prefix('admin')
@@ -177,6 +177,12 @@ Route::middleware(['auth', 'role:super_admin,admin,scolarite,viewer'])
         Route::get('/concours/{concours}', [AdminConcoursController::class, 'show'])
             ->name('concours.show');
     });
+
+/*
+|--------------------------------------------------------------------------
+| Administration concours : modifier et supprimer
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware(['auth', 'role:super_admin'])
     ->prefix('admin')
@@ -187,7 +193,11 @@ Route::middleware(['auth', 'role:super_admin'])
 
         Route::put('/concours/{concours}', [AdminConcoursController::class, 'update'])
             ->name('concours.update');
+
+        Route::delete('/concours/{concours}', [AdminConcoursController::class, 'destroy'])
+            ->name('concours.destroy');
     });
+
 /*
 |--------------------------------------------------------------------------
 | Auth Breeze
